@@ -32,7 +32,7 @@ smap = {'LON_CC': (4, 'Central zone launch'), 'LON_WEZ': (5, 'Western'), 'MIL_C'
 label = {'LON_CC': 'London CC', 'LON_WEZ': 'London WEZ', 'MIL_C': 'Milan Area C', 'MIL_ECO': 'Milan Ecopass',
          'NYC': 'New York', 'SIN': 'Singapore ALS', 'STO': 'Stockholm', 'VAL': 'Valletta', 'AMS': 'Amsterdam (trucks)',
          'BCN': 'Barcelona', 'BERLIN': 'Berlin', 'BHM': 'Birmingham', 'BRD': 'Bradford', 'GLA': 'Glasgow',
-         'LON_ULEZ19': 'ULEZ 2019', 'LON_ULEZ23': 'ULEZ 2023', 'MAD_C': 'Madrid Central', 'MIL_B': 'Milan Area B',
+         'LON_ULEZ19': 'London ULEZ (2019)', 'LON_ULEZ23': 'London ULEZ expansion (2023)', 'MAD_C': 'Madrid Central', 'MIL_B': 'Milan Area B',
          'MUC': 'Munich', 'SHF': 'Sheffield', 'ROM': 'Rome', 'LON_LEZ08': 'London LEZ (HGV)', 'LIS': 'Lisbon',
          'ANT': 'Antwerp', 'BRU': 'Brussels', 'GOT': 'Gothenburg', 'BGO': 'Bergen', 'OSL': 'Oslo',
          'TRD': 'Trondheim', 'DUR': 'Durham'}
@@ -66,10 +66,16 @@ for _, h in head.iterrows():
                     Cars_covered=s.Cars_covered if s is not None else '',
                     Compliance_pct=s.Compliance_at_launch_pct if s is not None else np.nan))
 ds = pd.DataFrame(out)
+# The Western Extension (2007 to 2011) was a temporary enlargement of the London charge.
+# It is analysed as a within-city boundary change (boundary_pairs.csv), not as a separate scheme.
+ds = ds[ds.Key != 'LON_WEZ'].reset_index(drop=True)
 # Rule: zone area is the area of the zone in which the effect was measured (WEZ alone; Lisbon Zone 1).
 # ULEZ 2023 compliance from the peer-reviewed evaluation (Tong et al. 2025: 7.4% non-compliant).
 ds.loc[ds.Key == 'LON_ULEZ23', 'Compliance_pct'] = 92.6
 ds['Journal_evidence'] = ds.Evidence_tier.eq('journal article')
+SIZE_BINS = [0, 1, 10, 50, 500, 1e5]
+SIZE_LABS = ['Street (<1 km²)', 'City centre (1-10 km²)', 'Inner city (10-50 km²)', 'Whole city (50-500 km²)', 'Metropolitan (>500 km²)']
+ds['Size_category'] = pd.cut(ds.Zone_km2, bins=SIZE_BINS, labels=SIZE_LABS, right=False).astype(str).replace('nan', '')
 ds.to_csv(f'{W}/analysis_dataset.csv', index=False)
 
 R = {}
@@ -116,8 +122,6 @@ R['LEZ']['ns_zero_schemes'] = sorted(ds[ds.Key.isin(NS_ZERO)].Label.tolist())
 R['LEZ']['coverage_lisbon_zone2'] = sp(alt.Coverage, alt.Effect_pct)
 R['LEZ']['coverage_lisbon_zone2_cars'] = sp(alt[alt.Cars_covered == 'Y'].Coverage, alt[alt.Cars_covered == 'Y'].Effect_pct)
 g = ds[(ds.Type == 'CC') & (ds.Outcome == 'Traffic')].copy()
-alt = g.copy(); i = alt.Key == 'LON_WEZ'; alt.loc[i, 'Zone_km2'] = 38.4; alt.loc[i, 'Coverage'] = 38.4 / alt.loc[i, 'Builtup_km2']
-R['CC']['coverage_wez_combined'] = sp(alt.Coverage, alt.Effect_pct); R['CC']['km2_wez_combined'] = sp(alt.Zone_km2, alt.Effect_pct)
 R['CC']['km2_excl_durham_singapore'] = sp(g[~g.Key.isin(['DUR', 'SIN'])].Zone_km2, g[~g.Key.isin(['DUR', 'SIN'])].Effect_pct)
 # terciles of coverage within type for a simple descriptive table
 for t, o in [('CC', 'Traffic'), ('LEZ', 'NO2')]:
@@ -127,6 +131,19 @@ for t, o in [('CC', 'Traffic'), ('LEZ', 'NO2')]:
                                    'coverage_pct_range': [round(float(v.Coverage.min() * 100), 2), round(float(v.Coverage.max() * 100), 1)],
                                    'schemes': v.Label.tolist()} for k, v in g.groupby('tercile', observed=True)}
 
+# Size categories (descriptive medians)
+NSZ = {'BERLIN', 'LON_LEZ08', 'LON_ULEZ23', 'MIL_B'}
+R['size_categories'] = {}
+for t_, o_ in [('CC', 'Traffic'), ('LEZ', 'NO2')]:
+    g = ds[(ds.Type == t_) & (ds.Outcome == o_) & (ds.Size_category != '')]
+    R['size_categories'][t_] = {c: {'n': int(len(h)), 'median': float(h.Effect_pct.median()),
+                                    'median_excl_ns_zero': (float(h[~h.Key.isin(NSZ)].Effect_pct.median()) if len(h[~h.Key.isin(NSZ)]) else None),
+                                    'n_control': int((h.Design_tier == 1).sum()),
+                                    'schemes': [f'{l} ({e:+.1f})' for l, e in zip(h.Label, h.Effect_pct)]}
+                                for c in SIZE_LABS for h in [g[g.Size_category == c]] if len(h)}
+    gj = g[g.Journal_evidence]
+    R['size_categories'][t_ + '_journal_only'] = {c: {'n': int(len(h)), 'median': float(h.Effect_pct.median())}
+                                                  for c in SIZE_LABS for h in [gj[gj.Size_category == c]] if len(h)}
 # Duration: all main rows with two or more measurements at different years
 m = rows[rows.Analysis_set == 'main'].copy()
 dur = []
@@ -162,7 +179,7 @@ R['reversal'] = rows[rows.Analysis_set == 'reversal'][['Scheme', 'Effect_pct', '
 R['marginal'] = rows[rows.Analysis_set == 'marginal'][['Scheme', 'Outcome', 'Effect_pct']].to_dict('records')
 R['pooled'] = rows[rows.Analysis_set == 'pooled'][['Scheme', 'Outcome', 'Effect_pct', 'Years_in_operation_at_measurement', 'Design']].to_dict('records')
 R['counts'] = {'effect_rows_total': int(len(rows)), 'main_rows': int((rows.Analysis_set == 'main').sum()),
-               'articles': int(rows.DOI.nunique()), 'schemes_with_headline': int(len(ds)),
+               'articles': int(rows[rows.DOI!='NO-DOI'].DOI.nunique() + rows[rows.DOI=='NO-DOI'].Peer_reviewed_citation.str[:30].nunique()), 'schemes_with_headline': int(len(ds)),
                'schemes_in_fig1': int(ds.Coverage.notna().sum())}
 json.dump(R, open(f'{W}/results.json', 'w'), indent=1, default=str)
 pd.set_option('display.width', 250)

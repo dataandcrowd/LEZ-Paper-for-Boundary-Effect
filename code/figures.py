@@ -97,8 +97,8 @@ unit = {'VAL': ' per hour', 'STO': ' per crossing', 'GOT': ' per crossing', 'OSL
 t['Charge or fine (2023 USD PPP)'] = [(f'{c:.0f}' + unit.get(k, '')) if pd.notna(c) else (f'fine {f:.0f}' if pd.notna(f) else '')
                                       for c, f, k in zip(t.Charge_usd, t.Fine_usd, t.Key)]
 t['Compliant at launch (%)'] = t.Compliance_pct.map(lambda v: '' if pd.isna(v) else f'{v:.1f}'.rstrip('0').rstrip('.'))
-names = {'London CC': 'London central zone', 'London WEZ': 'London Western Extension', 'ULEZ 2019': 'London ULEZ central',
-         'ULEZ 2023': 'London ULEZ London-wide', 'London LEZ (HGV)': 'London LEZ (heavy vehicles)', 'Singapore ALS': 'Singapore',
+names = {'London CC': 'London central zone', 'London WEZ': 'London Western Extension', 'London ULEZ (2019)': 'London ULEZ (2019, central London)',
+         'London ULEZ expansion (2023)': 'London ULEZ expansion to all of London (2023)', 'London LEZ (HGV)': 'London LEZ (heavy vehicles)', 'Singapore ALS': 'Singapore',
          'Sheffield': 'Sheffield (no cars)', 'Bradford': 'Bradford (no cars)', 'Amsterdam (trucks)': 'Amsterdam (trucks only)'}
 t['Scheme'] = t.Label.replace(names)
 t['Type'] = t.Type.map({'CC': 'Charge', 'LEZ': 'LEZ'})

@@ -60,12 +60,10 @@ sens=f"""| Analysis | Congestion charges (traffic) | Low emission zones (NO₂) 
 | Relative coverage, excluding Durham | {f(C['coverage_excl_durham'])} | |
 | Absolute area, excluding Durham | {f(C['km2_excl_durham'])} | |
 | Absolute area, excluding Durham and Singapore | {f(C['km2_excl_durham_singapore'])} | |
-| Western Extension with combined zone area (38.4 km²), coverage | {f(C['coverage_wez_combined'])} | |
-| Western Extension with combined zone area, km² | {f(C['km2_wez_combined'])} | |
 | Relative coverage, LEZs covering private cars | | {f(Lz['cars_covered']['coverage_vs_effect'])} |
 | Relative coverage, LEZs covering cars, control only | | {f(Lz['coverage_cars_counterfactual'])} |
 | Relative coverage, excluding four estimates reported only as not significant and charted as zero | | {f(Lz['coverage_excl_ns_zero'])} |
-| Relative coverage, excluding London-wide ULEZ | | {f(Lz['coverage_excl_london_2023'])} |
+| Relative coverage, excluding the 2023 ULEZ expansion | | {f(Lz['coverage_excl_london_2023'])} |
 | Lisbon Zone 2 effect (−22%) with Zone 2 area (25.14 km²) | | {f(Lz['coverage_lisbon_zone2'])} |
 | As above, LEZs covering cars | | {f(Lz['coverage_lisbon_zone2_cars'])} |
 | Charge relative to income vs effect | {f(C['charge_to_income_vs_effect'])} | |
@@ -76,7 +74,34 @@ sens=f"""| Analysis | Congestion charges (traffic) | Low emission zones (NO₂) 
 terc='\n'.join(['| Tercile | n | Median effect (%) | Coverage range (%) | Schemes |','|---|---|---|---|---|']+[f"| {k} | {v['n']} | {v['median_effect']} | {v['coverage_pct_range'][0]} to {v['coverage_pct_range'][1]} | {', '.join(v['schemes'])} |" for k,v in Lz['by_tercile'].items()])
 pers='\n'.join(['| Scheme | First (years, effect %) | Last (years, effect %) | Ratio |','|---|---|---|---|']+[f"| {p['Label']} | {p['first_years']}, {p['first']} | {p['last_years']}, {p['last']} | {p['ratio']} |" for p in R['persistence']])
 pooled='\n'.join(['| Estimate | Outcome | Effect (%) | Years | Design |','|---|---|---|---|---|']+[f"| {p['Scheme']} | {p['Outcome']} | {p['Effect_pct']} | {p['Years_in_operation_at_measurement']} | {p['Design']} |" for p in R['pooled']])
-marg='\n'.join(['| Change | Outcome | Effect (%) |','|---|---|---|']+[f"| {p['Scheme']} | {p['Outcome']} | {p['Effect_pct']} |" for p in R['marginal']+[{'Scheme':r['Scheme']+' (removal)','Outcome':'Traffic','Effect_pct':r['Effect_pct']} for r in R['reversal']]])
-si=open('si_template.md').read().format(S1=S1,S2=S2,sens=sens,terc=terc,pers=pers,pooled=pooled,marg=marg)
+SC=R['size_categories']
+L=['| Type | Size category | n | Median (%) | Median without zeros (%) | Control | Schemes (effect %) |','|---|---|---|---|---|---|---|']
+for typ,lab in [('CC','Charge (traffic)'),('LEZ','LEZ (NO₂)')]:
+    for k,v in SC[typ].items():
+        k2=k.replace('-',' to ')
+        mz='' if v['median_excl_ns_zero'] is None else f"{v['median_excl_ns_zero']:.1f}".replace('-','−')
+        L.append(f"| {lab} | {k2} | {v['n']} | {v['median']:.1f}".replace('-','−')+f" | {mz} | {v['n_control']} | {', '.join(s.replace('-','−') for s in v['schemes'])} |")
+sizecat='\n'.join(L)
+wc=pd.read_csv(f'{A}/within_city.csv'); wc=wc[~wc.Change_type.str.startswith('Zone enlarged')]
+L=['| Change type | City | Change (year) | Outcome | Effect (%) | Earlier effect (%) | Design | Source |','|---|---|---|---|---|---|---|---|']
+for _,r in wc.iterrows():
+    eff=('0 (not significant)' if r.Not_significant=='Y' and r.Effect_pct==0 else f"{r.Effect_pct:+.1f}".replace('-','−')+(' (not significant)' if r.Not_significant=='Y' else ''))
+    be='' if pd.isna(r.Before_effect_pct) else f"{r.Before_effect_pct:+.1f}".replace('-','−')+f" ({r.Before_label})"
+    doi='' if r.DOI=='NO-DOI' else f", doi:{r.DOI}"
+    L.append(f"| {r.Change_type} | {r.City} | {r.Change} ({r.Year}) | {r.Outcome} | {eff} | {be} | {r.Design} | {r.Source}{doi}. {r.Note} |")
+within='\n'.join(L).replace('–','-').replace('—',', ')
+bp=pd.read_csv(f'{A}/boundary_pairs.csv')
+L=['| City and scheme | Outcome | Zone | Year | Area (km²) | Effect (%) | Design | Measured | Source | Note |','|---|---|---|---|---|---|---|---|---|---|']
+for _,r in bp.iterrows():
+    eff='0 (not significant)' if r.Not_significant=='Y' else f"{r.Effect_pct:+.1f}".replace('-','−')
+    L.append(f"| {r.City} {r.Scheme.lower() if r.Scheme[0].islower() else r.Scheme} | {r.Outcome.replace('NO2','NO₂')} | {r.Step_label} | {r.Year} | {r.Zone_km2:,.4g} | {eff} | {r.Design} | {r.Measured_where} | {r.Source}, doi:{r.DOI} | {r.Note} |")
+pairs='\n'.join(L)
+si=open('si_template.md').read()
+for k,v in dict(S1=S1,S2=S2,sens=sens,terc=terc,pers=pers,pooled=pooled,sizecat=sizecat,within=within,pairs=pairs).items(): si=si.replace(f'@{k}@',v)
 si=si.replace('Attard and Ison (2010, 2015); Attard (2013) (peer-reviewed)','Attard and Ison (2010, peer-reviewed); Attard (2013, conference paper)').replace(' ;',';').replace('Tretvik (2007) (peer-reviewed)','Tretvik (2007, conference paper)')
 open('supplementary.md','w').write(si); print(len(si.split()))
+si=open('supplementary.md').read()
+si=si.replace('Durham is not a UCDB urban centre; its denominator is','Durham is not a UCDB urban centre, so its denominator is')
+si=si.replace('(London ULEZ central 2019 and London-wide 2023; the inner London step of 2021 has no peer-reviewed estimate)','(London ULEZ central 2019 and London-wide 2023, with no peer-reviewed estimate for the inner London step of 2021)')
+si=si.replace('95% CI -12.7 to 7.4 ug/m3','95% CI −12.7 to 7.4 µg/m³').replace('; ',', ').replace(';',',')
+open('supplementary.md','w').write(si)
