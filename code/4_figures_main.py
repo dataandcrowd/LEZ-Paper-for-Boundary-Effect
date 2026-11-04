@@ -20,13 +20,14 @@ short = {'Street (<1 km²)': 'Street\n(<1 km²)', 'City centre (1-10 km²)': 'Ci
          'Inner city (10-50 km²)': 'Inner city\n(10 to 50 km²)', 'Whole city (50-500 km²)': 'Whole city\n(50 to 500 km²)',
          'Metropolitan (>500 km²)': 'Metropolitan\n(>500 km²)'}
 from adjustText import adjust_text
-fig, axes = plt.subplots(1, 2, figsize=(10, 4.9), gridspec_kw={'width_ratios': [3, 5]})
-for ax, (t, o, col, title, ncat) in zip(axes, [('CC', 'Traffic', BLUE, 'A. Congestion charges: traffic', 3),
-                                               ('LEZ', 'NO2', ORANGE, 'B. Low emission zones: NO$_2$', 5)]):
+fig, axes = plt.subplots(1, 2, figsize=(10, 4.9), gridspec_kw={'width_ratios': [2.4, 5]})
+for ax, (t, o, col, title, clist) in zip(axes, [('CC', 'Traffic', BLUE, 'A. Congestion charges: traffic', cats[1:3]),
+                                               ('LEZ', 'NO2', ORANGE, 'B. Low emission zones: NO$_2$', cats[:5])]):
     g = ds[(ds.Type == t) & (ds.Outcome == o) & ds.Size_category.notna() & (ds.Size_category != '')]
     ax.axhline(0, color=MUTED, lw=0.8, zorder=1); ax.grid(axis='y', color=GRID, lw=0.6, zorder=0)
     texts = []; ticklabs = []; px = []; py = []
-    for i, c in enumerate(cats[:ncat]):
+    ncat = len(clist)
+    for i, c in enumerate(clist):
         h = g[g.Size_category == c].sort_values('Effect_pct')
         mtxt = '' if h.empty else '\nmedian ' + f'{h.Effect_pct.median():+.0f}%'.replace('-', '−').replace('+0%', '0%')
         ticklabs.append(short[c] + f'\nn = {len(h)}' + mtxt)

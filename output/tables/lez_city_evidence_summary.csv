@@ -1,0 +1,42 @@
+City,Outcome,count,min,median,max
+Amsterdam,Black carbon,1,-12.9,-12.9,-12.9
+Amsterdam,NO2,1,-4.9,-4.9,-4.9
+Amsterdam,PM10,1,-5.8,-5.8,-5.8
+Antwerp,NO2,1,-12.2,-12.2,-12.2
+Barcelona,NO2,1,-15.8,-15.8,-15.8
+Berlin,Black carbon,2,-24.9,-17.0,-9.1
+Berlin,NO2,1,0.0,0.0,0.0
+Berlin,PM10,3,-16.8,-15.0,-11.5
+Birmingham,Fleet,1,-29.4,-29.4,-29.4
+Birmingham,NO2,1,-3.4,-3.4,-3.4
+Birmingham,NOx,1,-5.4,-5.4,-5.4
+Birmingham,PM2.5,1,0.0,0.0,0.0
+Bradford,NO2,1,-27.0,-27.0,-27.0
+Brussels,NO2,1,-13.3,-13.3,-13.3
+Glasgow,NO2,2,-28.0,-20.5,-13.0
+Glasgow,Traffic,1,-16.0,-16.0,-16.0
+Lisbon,NO2,1,-12.0,-12.0,-12.0
+Lisbon,PM10,2,-29.0,-26.0,-23.0
+London,Fleet,1,-34.0,-34.0,-34.0
+London,NO2,10,-19.6,-10.6,0.0
+London,NOx,4,-28.8,-15.4,0.0
+London,PM10,3,-5.5,-2.8,14.8
+London,PM2.5,2,-12.7,-6.4,0.0
+Madrid,NO2,6,-32.2,-26.8,-19.0
+Madrid,PM10,1,-18.2,-18.2,-18.2
+Madrid,Traffic,3,-16.0,-8.1,-3.8
+Milan,NO2,1,0.0,0.0,0.0
+Munich,Black carbon,1,-54.5,-54.5,-54.5
+Munich,NO2,3,-10.0,-2.6,2.4
+Munich,PM10,6,-23.7,-8.6,-0.5
+Munich,PM2.5,1,-60.0,-60.0,-60.0
+Rome,NO2,1,-18.0,-18.0,-18.0
+Rotterdam,Traffic,1,-50.0,-50.0,-50.0
+Seoul,NO2,1,-4.7,-4.7,-4.7
+Seoul,PM10,1,-13.6,-13.6,-13.6
+Seoul,Traffic,3,-12.8,-7.9,-6.9
+Sheffield,NO2,1,2.5,2.5,2.5
+Sheffield,PM2.5,1,0.0,0.0,0.0
+Sheffield,Traffic,1,0.0,0.0,0.0
+Tokyo (Greater Tokyo),Fleet,2,34.0,37.0,40.0
+Tokyo (Greater Tokyo),PM10,5,-10.0,-6.6,-2.0

@@ -9,7 +9,9 @@ date: "Draft 4 (rapid review), 3 November 2026"
 
 **Search.** This is a rapid review (Garritty et al., 2021). For each of the 50 schemes, one reviewer searched Google Scholar, Crossref and publisher sites in October and November 2026, combining the scheme name (and local name) with evaluation, traffic, air quality, NO2, PM10, difference-in-differences and synthetic control. Reference lists of Chamberlain et al. (2023), Holman et al. (2015) and Delgado-Lindeman et al. (2025) were screened. Working papers, preprints and agency reports were not used as effect sources except where flagged in Table S1. Every DOI was resolved through Crossref. Values first taken from secondary summaries were checked against the full texts for Milan Area C (Gibson & Carnovale, 2015, Beria, 2016), Antwerp and Brussels (Bruyneel et al., 2025) and the London Western Extension (Ding et al., 2022). Values for Barcelona (abstract and an institutional summary), Tassinari (2024), Danielis et al. (2012) and Givoni (2012) were taken from abstracts, working-paper or conference versions and are flagged in the extraction files.
 
-**Extraction.** One row per scheme, outcome and measurement time. Fields: outcome metric, percentage change (negative = reduction), measurement location, years in operation at the midpoint of the evaluation window, design, spillover, citation and DOI. Where only an absolute change was reported, the percentage was computed against the baseline mean stated in the paper and flagged. Full extraction: 115 rows from 61 sources, 57 with a DOI (deposited files cc_effects.csv and lez_effects.csv).
+**Second search for congestion charges (November 2026).** For each congestion charging city (London, Stockholm, Gothenburg, Milan, Singapore, New York, Oslo, Bergen, Trondheim, Valletta and Durham), peer-reviewed journal articles reporting ex-post changes in traffic or air quality were searched in Crossref, OpenAlex, Semantic Scholar and publisher pages. Working papers, preprints, conference papers, theses and agency reports were excluded. This added 36 rows from 16 articles (Table S12). The same search was then run for low emission zones (UK; southern Europe, France and Poland; Benelux and Germany; Asia, Latin America and Africa), adding 48 rows from 17 articles (Table S13). Street-specific diesel bans and city-wide licence-plate rationing were excluded because they have no bounded zone. Numbers were taken from abstracts or open full texts, and four Milan articles report only the direction of change in their abstracts.
+
+**Extraction.** One row per scheme, outcome and measurement time. Fields: outcome metric, percentage change (negative = reduction), measurement location, years in operation at the midpoint of the evaluation window, design, spillover, citation and DOI. Where only an absolute change was reported, the percentage was computed against the baseline mean stated in the paper and flagged. Full extraction: 199 rows from 92 sources, 87 with a DOI (deposited files cc_effects.csv and lez_effects.csv).
 
 # S2. Eligibility and departures from a systematic review
 
@@ -27,7 +29,7 @@ Departures from a systematic review, following Garritty et al. (2021): (1) a sch
 
 # S3. Charting and synthesis rules
 
-Primary outcome: traffic volume for congestion charges (cordon crossings preferred, otherwise vehicle-km inside the zone) and NO₂ inside the zone for LEZs. PM10, PM2.5, black carbon and air quality rows for charges are secondary. Excluded from the headline set: spatial-contrast designs (Ding et al., 2022, which compares roads just inside and outside the Western Extension boundary and has no baseline year) and pooled multi-city estimates without a single zone size (German and Dutch panels, Table S8). The London Western Extension (2007 to 2011) was a temporary enlargement of the London charge and is analysed as an enlargement (Table S4, Figure 2) rather than as a separate scheme. Enlargements were included in Table S4 only where the original and the enlarged zone were evaluated on the same outcome (traffic or NO₂). Charge or rule changes, suspensions and removals are listed in Table S5, where the outcome is the one reported for the change (traffic, NO₂ or PM10).
+Primary outcome: traffic volume for congestion charges (cordon crossings preferred, otherwise vehicle-km inside the zone) and NO₂ inside the zone for LEZs. PM10, PM2.5, black carbon and air quality rows for charges are secondary. Excluded from the analysis: Durham and Valletta, because their traffic estimates originate in council monitoring (Durham, reported in May et al. 2010) and a conference paper (Valletta, Attard 2013), and the only peer-reviewed Valletta source uses parked cars as a proxy for traffic (Attard and Ison 2015). Also excluded from the headline set: spatial-contrast designs (Ding et al., 2022, which compares roads just inside and outside the Western Extension boundary and has no baseline year) and pooled multi-city estimates without a single zone size (German and Dutch panels, Table S8). The London Western Extension (2007 to 2011) was a temporary enlargement of the London charge and is analysed as an enlargement (Table S4, Figure 2) rather than as a separate scheme. Enlargements were included in Table S4 only where the original and the enlarged zone were evaluated on the same outcome (traffic or NO₂). Charge or rule changes, suspensions and removals are listed in Table S5, where the outcome is the one reported for the change (traffic, NO₂ or PM10).
 
 Design types (charted as descriptors, not as a quality score): (1) untreated control group or natural experiment (difference-in-differences, synthetic control, regression discontinuity in time, interrupted time series with a control or natural experiment, namely Gibson and Carnovale 2015, Maranzano et al. 2020, Atkinson et al. 2009); (2) before-after adjusted for external factors without a control (interrupted time series without control, for example Börjesson and Kristoffersson 2018, Bryant et al. 2025, Hajmohammadi and Heydecker 2022); (3) before-after, raw or against a reference site; (4) model-based. Headline estimate per scheme phase: earliest duration band (under 1.5 years, 1.5 to under 4, 4 or more), then best design tier, then the median if several remain. Years in operation is the midpoint of the evaluation window, or the window end for cumulative trend estimates (Antwerp, Brussels). Persistence ratio: latest divided by earliest estimate for one metric from one source, for schemes with two or more measurement times.
 
@@ -99,6 +101,24 @@ A positive ρ means larger values go with effects closer to zero (smaller reduct
 
 @terc@
 
+# Table S11. Current charge or status of each scheme (November 2026)
+
+Local currency. Effects in Table 1 were measured under the charge at launch, not under these prices.
+
+@current@
+
+# Table S12. Every congestion-charge estimate of traffic and air quality, by city
+
+All peer-reviewed estimates charted for congestion charges, including those not used as headline estimates. "Direction only" means the abstract reports the direction of a significant change but no size that could be converted to a percentage. Use in this review follows the rules in S3.
+
+@city@
+
+# Table S13. Every low emission zone estimate of traffic, fleet and air quality, by city
+
+All peer-reviewed estimates charted for low emission zones, including those not used as headline estimates and schemes found in the November 2026 search that are outside the 50-scheme inventory (Ghent, Rotterdam, Stuttgart, Seville, Madrid's 2021 zone, Seoul and Greater Tokyo). Fleet rows are changes in the share or registration of non-compliant vehicles, not traffic volume.
+
+@lezcity@
+
 # Figure S1
 
 ![Figure S1. Headline effect against relative zone coverage (zone area as a share of the urban centre, log scale). (A) Congestion charges, change in traffic. (B) Low emission zones, change in NO₂ inside the zone. Filled markers have an untreated control group or natural experiment. Squares in (A) rest on conference papers, council data or a non-indexed journal, and triangles in (B) are zones that exempt private cars. Horizontal bars show the range of reported or computed zone areas. Dashed arrows join phases of the same city with different boundaries.](../figures/figS1_effect_vs_coverage.png)
@@ -114,7 +134,7 @@ A positive ρ means larger values go with effects closer to zero (smaller reduct
 # S5. Known limitations of the data
 
 1. Single-reviewer searching, screening and charting is the main departure from a systematic review. Key estimates were checked against the full texts (S1), but a second reviewer has not verified the full extraction.
-2. Six of the 13 charging schemes rest on conference papers, council data or a non-indexed journal, and all six are before-after comparisons. Both charges in the street category (Durham, Valletta) are among them.
+2. Six of the 13 charging schemes rest on conference papers, council data or a non-indexed journal, and all six are before-after comparisons. Durham and Valletta were excluded from the analysis for this reason (S3). The Norwegian toll rings remain but have no recoverable zone area and so do not enter Figure 1.
 3. Headline estimates mix measurement locations within each type (cordon crossings and vehicle-km for charges, roadside and background monitors for LEZs).
 4. Several LEZ estimates come from modelled residential exposure (Antwerp, Brussels) or emissions models (Rome).
 5. The London Western Extension has two conflicting estimates. The difference-in-differences estimate (−5%, Ait Bihi Ouali et al., 2021) is used and the spatial regression discontinuity (−31%, Ding et al., 2022) is excluded as not a change estimate.

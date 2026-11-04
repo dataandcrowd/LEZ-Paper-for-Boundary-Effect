@@ -25,7 +25,10 @@ import pandas as pd, numpy as np, re, sys
 from paths import EXTRACT, ANALYSIS
 cc = pd.read_csv(EXTRACT / 'cc_effects.csv'); cc['Type'] = 'CC'
 lz = pd.read_csv(EXTRACT / 'lez_effects.csv'); lz['Type'] = 'LEZ'
-d = pd.concat([cc, lz], ignore_index=True)
+# Rows from the November 2026 peer-reviewed search are appended last so that earlier row numbers stay stable.
+upd = pd.read_csv(EXTRACT / 'cc_effects_update_2026-11.csv'); upd['Type'] = 'CC'
+updl = pd.read_csv(EXTRACT / 'lez_effects_update_2026-11.csv'); updl['Type'] = 'LEZ'
+d = pd.concat([cc, lz, upd, updl], ignore_index=True)
 d.insert(0, 'Row', range(1, len(d) + 1))
 
 def key(r):
@@ -40,6 +43,10 @@ def key(r):
         if c == 'singapore': return 'SIN'
         return {'valletta': 'VAL', 'oslo': 'OSL', 'bergen': 'BGO', 'trondheim': 'TRD',
                 'durham': 'DUR', 'new york': 'NYC'}[c]
+    if 'street-specific' in s: return 'STREET_BAN'
+    if 'm-30' in s: return 'MAD_ZBE'
+    if c.startswith('tokyo'): return 'TOK'
+    if c == 'seoul': return 'SEO_GTZ' if 'green transport' in s else 'SEO_LEZ'
     if 'ulez central' in s: return 'LON_ULEZ19'
     if 'ulez greater' in s: return 'LON_ULEZ23'
     if 'lez for heavy' in s: return 'LON_LEZ08'
@@ -48,7 +55,8 @@ def key(r):
     return {'berlin': 'BERLIN', 'munich': 'MUC', 'birmingham': 'BHM', 'sheffield': 'SHF',
             'bradford': 'BRD', 'glasgow': 'GLA', 'madrid': 'MAD_C', 'barcelona': 'BCN',
             'milan': 'MIL_B', 'rome': 'ROM', 'lisbon': 'LIS', 'amsterdam': 'AMS',
-            'antwerp': 'ANT', 'brussels': 'BRU'}[c]
+            'antwerp': 'ANT', 'brussels': 'BRU', 'ghent': 'GHE', 'rotterdam': 'ROT', 'stuttgart': 'STU',
+            'seville': 'SEV', 'darmstadt': 'STREET_BAN', 'hamburg': 'STREET_BAN'}[c]
 
 d['Scheme_key'] = d.apply(key, axis=1)
 
@@ -62,7 +70,9 @@ d['Outcome'] = d.Outcome_family.map(fam)
 # CC air-quality rows: classify pollutant from metric text
 for i, r in d[(d.Type == 'CC') & (d.Outcome == 'Air quality')].iterrows():
     m = str(r.Outcome_metric)
-    d.at[i, 'Outcome'] = 'NO2' if 'NO2' in m else ('NOx' if 'NOx' in m else ('PM2.5' if 'PM2.5' in m else 'Other AQ'))
+    d.at[i, 'Outcome'] = ('NO2' if 'NO2' in m else 'NOx' if 'NOx' in m else 'PM2.5' if 'PM2.5' in m else
+                          'PM10' if 'PM10' in m else 'CO' if m.startswith('CO ') or ' CO ' in m else
+                          'Black carbon' if 'black carbon' in m.lower() else 'Other AQ')
 
 # Design tier: 1 = untreated control group or natural experiment; 2 = before-after adjusted
 # for external factors without a control (interrupted time series without control);
@@ -83,22 +93,52 @@ d['Evidence_tier'] = [ev.get(k, 'journal article') if not (k == 'TRD' and 'remov
 yrs = d.Years_in_operation_at_measurement
 d['Duration_band'] = np.select([yrs < 1.5, yrs < 4], ['short', 'medium'], 'long')
 
+# Traffic rows kept out of the headline set although measured inside the zone or at the cordon
+SECONDARY_DOI = {
+    '10.1177/1087724X04268569': 'restates TfL monitoring already charted from Givoni (2012)',
+    '10.1007/s11116-017-9853-4': '24-hour count from the same city counts as Borjesson and Kristoffersson (2015)',
+    '10.32866/001c.155761': 'ride-hailing trips only, not total traffic',
+    '10.1016/j.cstp.2014.07.001': 'parked vehicles as a proxy for traffic',
+}
+# Schemes whose traffic evidence originates in grey literature (decision of 4 November 2026)
+EXCLUDED_SCHEMES = {
+    'DUR': 'excluded: the traffic estimate originates in council monitoring (cited in May et al. 2010)',
+    'VAL': 'excluded: the traffic estimate originates in a conference paper, and the peer-reviewed source uses parked cars as a proxy',
+}
+EXCLUDED_SCHEMES['STREET_BAN'] = 'excluded: street-specific diesel ban, not a bounded zone'
+EXCLUDED_DOI = {'10.1016/j.atmosenv.2024.120326': 'excluded: before and after periods fall in different seasons, and the authors do not attribute the change to the zone'}
+SECONDARY_DOI['10.1016/S2468-2667(18)30202-0'] = 'trend over 2006 to 2013, not attributed to the LEZ by the authors'
+# Schemes found in the November 2026 search that are not in the 50-scheme inventory (no verified zone area yet)
+OUTSIDE_INVENTORY = {'MAD_ZBE', 'TOK', 'SEO_LEZ', 'SEO_GTZ', 'GHE', 'ROT', 'STU', 'SEV'}
 set_, why = [], []
 for _, r in d.iterrows():
     s = r.Scheme.lower(); m = str(r.Outcome_metric).lower(); n = str(r.Extractor_notes).lower()
+    if r.Scheme_key in EXCLUDED_SCHEMES:
+        set_.append('excluded'); why.append(EXCLUDED_SCHEMES[r.Scheme_key]); continue
+    if r.DOI in EXCLUDED_DOI:
+        set_.append('excluded'); why.append(EXCLUDED_DOI[r.DOI]); continue
     if pd.isna(r.Effect_pct):
         set_.append('excluded'); why.append('no numeric effect'); continue
     if r.DOI == '10.1080/15568318.2021.1914790':
         set_.append('excluded'); why.append('spatial contrast design (inside vs outside boundary), not a change estimate'); continue
-    if 'removed' in s or 'abolition' in m or r.Effect_pct > 10 and r.Type == 'CC':
+    if 'removed' in s or 'abolition' in m or (r.Effect_pct > 10 and r.Type == 'CC' and r.Outcome == 'Traffic'):
         set_.append('reversal'); why.append('scheme removal: traffic change after charge withdrawn'); continue
-    if any(k in s for k in ['charge increase', '2016 charge', 'evening extension', 'selective diesel ban']):
+    if r.DOI in SECONDARY_DOI and r.Type == 'CC' and r.Outcome == 'Traffic':
+        set_.append('secondary'); why.append(SECONDARY_DOI[r.DOI]); continue
+    if any(k in s for k in ['charge increase', '2016 charge', 'evening extension', 'selective diesel ban',
+                            'rush-hour charge', 'end of green-vehicle exemption', 'tightened rules']):
         set_.append('marginal'); why.append('marginal change to an existing scheme'); continue
+    if r.Scheme_key in OUTSIDE_INVENTORY:
+        set_.append('secondary'); why.append('scheme or stage outside the 50-scheme inventory, not in Figure 1'); continue
+    if r.DOI in SECONDARY_DOI:
+        set_.append('secondary'); why.append(SECONDARY_DOI[r.DOI]); continue
     if r.Scheme_key in ('DE_POOL', 'NL_POOL'):
         set_.append('pooled'); why.append('pooled multi-city estimate, no single zone size'); continue
     if r.Type == 'CC':
         if r.Outcome == 'Traffic' and r.Measured_where in ('Cordon crossing', 'Inside zone'):
             set_.append('main'); why.append('CC traffic'); continue
+        if r.Outcome == 'Traffic':
+            set_.append('secondary'); why.append(f'CC traffic measured {str(r.Measured_where).lower()}'); continue
         set_.append('secondary'); why.append('CC air quality (secondary outcome)'); continue
     if r.Outcome == 'NO2' and r.Measured_where == 'Inside zone':
         set_.append('main'); why.append('LEZ NO2 inside zone'); continue

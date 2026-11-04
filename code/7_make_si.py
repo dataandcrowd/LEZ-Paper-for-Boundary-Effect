@@ -1,5 +1,5 @@
 import pandas as pd, json, re
-from paths import ANALYSIS, CURATED, EXTRACT, TEMPLATES, MANUSCRIPT
+from paths import ANALYSIS, CURATED, EXTRACT, TEMPLATES, MANUSCRIPT, TABLES
 A=str(ANALYSIS); G=str(EXTRACT); CUR=str(CURATED)
 ds=pd.read_csv(f'{A}/analysis_dataset.csv'); rows=pd.read_csv(f'{A}/analysis_rows.csv'); R=json.load(open(f'{A}/results.json'))
 st=pd.read_csv(f'{G}/stringency.csv')
@@ -97,8 +97,16 @@ for _,r in bp.iterrows():
     eff='0 (not significant)' if r.Not_significant=='Y' else f"{r.Effect_pct:+.1f}".replace('-','−')
     L.append(f"| {r.City} {r.Scheme.lower() if r.Scheme[0].islower() else r.Scheme} | {r.Outcome.replace('NO2','NO₂')} | {r.Step_label} | {r.Year} | {r.Zone_km2:,.4g} | {eff} | {r.Design} | {r.Measured_where} | {r.Source}, doi:{r.DOI} | {r.Note} |")
 pairs='\n'.join(L)
+cfiles=[EXTRACT / f for f in ('current_charges_cc.csv','current_charges_lez.csv') if (EXTRACT / f).exists()]
+cur=pd.concat([pd.read_csv(f) for f in cfiles]) if cfiles else pd.DataFrame()
+lab=dict(zip(pd.read_csv(f'{A}/analysis_dataset.csv').Key, pd.read_csv(f'{A}/analysis_dataset.csv').Label))
+L=['| Scheme | Status | Current charge | Effective from | Source |','|---|---|---|---|---|']
+for _,r in cur.iterrows():
+    s=lambda v: '' if pd.isna(v) else str(v)
+    L.append(f"| {lab.get(r.Key, r.Key)} | {s(r.Status_2026)} | {s(r.Current_charge)} | {s(r.Effective_from)} | {s(r.Source_title)} ({s(r.Source_type)}), {s(r.Source_URL)} |")
+current='\n'.join(L)
 si=open(TEMPLATES / 'si_template.md').read()
-for k,v in dict(S1=S1,S2=S2,sens=sens,terc=terc,pers=pers,pooled=pooled,sizecat=sizecat,within=within,pairs=pairs).items(): si=si.replace(f'@{k}@',v)
+for k,v in dict(S1=S1,S2=S2,sens=sens,terc=terc,pers=pers,pooled=pooled,sizecat=sizecat,within=within,pairs=pairs,current=current,city=(TABLES / 'cc_city_evidence.md').read_text().strip(),lezcity=(TABLES / 'lez_city_evidence.md').read_text().strip()).items(): si=si.replace(f'@{k}@',v)
 si=si.replace('Attard and Ison (2010, 2015); Attard (2013) (peer-reviewed)','Attard and Ison (2010, peer-reviewed); Attard (2013, conference paper)').replace(' ;',';').replace('Tretvik (2007) (peer-reviewed)','Tretvik (2007, conference paper)')
 open(MANUSCRIPT / 'supplementary.md','w').write(si); print(len(si.split()))
 si=open(MANUSCRIPT / 'supplementary.md').read()

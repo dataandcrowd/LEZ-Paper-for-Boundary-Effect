@@ -7,7 +7,6 @@ BGO,CC,Traffic,-6.5,-6.5,-6.5,1.0,short,3.0,0.5,secondary citation in journal re
 BHM,LEZ,NO2,-3.4,-3.4,-3.4,1.0,short,1.0,0.5,journal article,89
 BRD,LEZ,NO2,-27.0,-27.0,-27.0,1.0,short,2.0,0.5,journal article,94
 BRU,LEZ,NO2,-13.3,-13.3,-13.3,1.0,long,1.0,5.0,journal article,115
-DUR,CC,Traffic,-85.0,-85.0,-85.0,1.0,short,3.0,1.0,council monitoring reported in journal review,43
 GLA,LEZ,NO2,-20.5,-28.0,-13.0,2.0,short,3.0,0.3,journal article,95;96
 GOT,CC,Traffic,-11.45,-12.0,-10.9,2.0,short,3.0,0.5,journal article,23;24
 LIS,LEZ,NO2,-12.0,-12.0,-12.0,1.0,medium,3.0,2.8,journal article,107
@@ -16,7 +15,7 @@ LON_LEZ08,LEZ,NO2,0.0,0.0,0.0,1.0,medium,3.0,1.5,journal article,61
 LON_ULEZ19,LEZ,NO2,-19.0,-19.6,-8.2,5.0,short,1.0,0.4,journal article,47;48;49;55;56
 LON_ULEZ23,LEZ,NO2,0.0,0.0,0.0,1.0,short,1.0,0.1,journal article,51
 LON_WEZ,CC,Traffic,-5.0,-5.0,-5.0,1.0,medium,1.0,2.5,journal article,8
-MAD_C,LEZ,NO2,-28.6,-28.7,-28.5,2.0,short,1.0,0.35,journal article,98;100
+MAD_C,LEZ,NO2,-28.5,-28.7,-19.0,3.0,short,1.0,0.3,journal article,98;100;161
 MIL_B,LEZ,NO2,0.0,0.0,0.0,1.0,short,1.0,0.3,journal article,105
 MIL_C,CC,Traffic,-14.5,-14.5,-14.5,1.0,short,1.0,0.6,journal article,33
 MIL_ECO,CC,Traffic,-17.6,-21.0,-14.2,2.0,short,3.0,0.45,journal article,27;28
@@ -28,4 +27,3 @@ SHF,LEZ,NO2,2.5,2.5,2.5,1.0,short,1.0,0.7,journal article,91
 SIN,CC,Traffic,-44.0,-44.0,-44.0,1.0,short,3.0,0.1,journal article without DOI (JEASTS 1995),36
 STO,CC,Traffic,-21.4,-21.4,-21.4,1.0,short,2.0,0.5,journal article,17
 TRD,CC,Traffic,-10.0,-10.0,-10.0,1.0,short,3.0,0.5,conference paper (WCTR 2007),41
-VAL,CC,Traffic,-25.0,-25.0,-25.0,1.0,short,3.0,1.0,conference paper (WCTR 2013),38

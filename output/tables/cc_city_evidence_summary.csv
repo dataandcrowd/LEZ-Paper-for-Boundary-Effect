@@ -1,0 +1,21 @@
+City,Outcome,count,min,median,max
+Bergen,Traffic,1,-6.5,-6.5,-6.5
+Gothenburg,Traffic,5,-12.0,-10.0,-9.5
+London,CO,1,-9.7,-9.7,-9.7
+London,NO2,1,14.0,14.0,14.0
+London,NOx,1,-12.0,-12.0,-12.0
+London,PM10,1,-22.0,-22.0,-22.0
+London,Traffic,9,-16.0,-12.0,-5.0
+Milan,CO,1,-6.1,-6.1,-6.1
+Milan,NO2,1,-25.0,-25.0,-25.0
+Milan,Traffic,6,-31.1,-16.5,-14.2
+New York,NO2,1,-1.2,-1.2,-1.2
+New York,PM2.5,1,-22.0,-22.0,-22.0
+New York,Traffic,3,-11.0,-10.0,-6.0
+Oslo,Traffic,1,-4.0,-4.0,-4.0
+Singapore,Traffic,1,-44.0,-44.0,-44.0
+Stockholm,NO2,1,-5.0,-5.0,-5.0
+Stockholm,NOx,2,-12.0,-10.2,-8.5
+Stockholm,PM10,2,-13.0,-10.0,-7.0
+Stockholm,Traffic,9,-22.3,-20.7,-15.0
+Trondheim,Traffic,1,-10.0,-10.0,-10.0

@@ -1,31 +1,29 @@
-| Scheme | Type | Start | Zone (km²) | Coverage (%) | Effect (%) | Years | Design | Charge or fine (2023 USD PPP) | Compliant at launch (%) |
-|---|---|---|---|---|---|---|---|---|---|
-| New York | Charge | 2025 | 23.8 | 0.8 | −11.0 | 0.3 | Before-after | 9 |  |
-| Valletta | Charge | 2007 | 0.80 | 0.8 | −25.0 | 1.0 | Before-after | 2 per hour |  |
-| Milan Area C | Charge | 2012 | 8.2 | 1.0 | −14.5 | 0.6 | Control | 10 |  |
-| Milan Ecopass | Charge | 2008 | 8.2 | 1.0 | −17.6 | 0.5 | Before-after | 11 (middle band) | 58 |
-| London central zone | Charge | 2003 | 21.4 | 1.3 | −11.8 | 0.5 | Before-after | 13 |  |
-| Singapore | Charge | 1975 | 6.0 | 1.4 | −44.0 | 0.1 | Before-after | 10 |  |
-| Durham | Charge | 2002 | 0.35 | 2.7 | −85.0 | 1.0 | Before-after | 5 per exit |  |
-| Stockholm | Charge | 2006 | 30.0 | 8.8 | −21.4 | 0.5 | Adjusted before-after | 3 per crossing |  |
-| Bergen | Charge | 1986 |  |  | −6.5 | 0.5 | Before-after | 2 per crossing |  |
-| Gothenburg | Charge | 2013 |  |  | −11.4 | 0.5 | Before-after | 3 per crossing |  |
-| Oslo | Charge | 1990 |  |  | −4.0 | 0.5 | Before-after | 3 per crossing |  |
-| Trondheim | Charge | 1991 |  |  | −10.0 | 0.5 | Before-after | 2 per crossing |  |
-| Lisbon | LEZ | 2012 | 0.68 | 0.2 | −12.0 | 2.8 | Before-after |  |  |
-| Madrid Central | LEZ | 2018 | 4.7 | 0.7 | −28.6 | 0.3 | Control | fine 188 |  |
-| Glasgow | LEZ | 2023 | 3.1 | 1.0 | −20.5 | 0.3 | Before-after | fine 91 |  |
-| Sheffield (no cars) | LEZ | 2023 | 2.3 | 1.1 | +2.5 | 0.7 | Control | 15 (vans, taxis) |  |
-| Birmingham | LEZ | 2021 | 7.8 | 1.1 | −3.4 | 0.5 | Control | 14 | 79.8 |
-| Rome | LEZ | 2001 | 6.0 | 1.3 | −18.0 | 2.5 | Model |  |  |
-| London ULEZ (2019, central London) | LEZ | 2019 | 21.4 | 1.3 | −19.0 | 0.4 | Control | 23 | 60.9 |
-| Bradford (no cars) | LEZ | 2022 | 22.0 | 6.9 | −27.0 | 0.5 | Adjusted before-after | 15 (vans, taxis) | 96.4 |
-| Antwerp | LEZ | 2017 | 22.9 | 7.0 | −12.2 | 5.9 | Control | fine 216 |  |
-| Munich | LEZ | 2008 | 44.0 | 12.8 | +2.4 | 1.0 | Before-after | fine 76 |  |
-| Berlin | LEZ | 2008 | 88.0 | 12.9 | 0.0 | 3.5 | Before-after | fine 76 |  |
-| Amsterdam (trucks only) | LEZ | 2009 | 47.2 | 15.3 | −4.9 | 1.0 | Before-after | fine 286 |  |
-| Milan Area B | LEZ | 2019 | 128 | 16.3 | 0.0 | 0.3 | Control | fine 160 |  |
-| Barcelona | LEZ | 2020 | 95.0 | 21.7 | −15.8 | 1.5 | Control | fine 208 |  |
-| Brussels | LEZ | 2018 | 161 | 68.7 | −13.3 | 5.0 | Control | fine 594 | 99.5 |
-| London LEZ (heavy vehicles) | LEZ | 2008 | 1,528 | 92.7 | 0.0 | 1.5 | Before-after | 452 (lorries) |  |
-| London ULEZ expansion to all of London (2023) | LEZ | 2023 | 1,529 | 92.7 | 0.0 | 0.1 | Control | 19 | 92.6 |
+| Scheme | Type | Start | Zone (km²) | Coverage (%) | Effect (%) | Years | Design | Charge or fine at launch (2023 USD PPP) | Compliant at launch (%) | Current charge or status (2026) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| New York | Charge | 2025 | 23.8 | 0.8 | −11.0 | 0.3 | Before-after | 9 |  | USD 9 at peak |
+| Milan Area C | Charge | 2012 | 8.2 | 1.0 | −14.5 | 0.6 | Control | 10 |  | EUR 7.50 a day |
+| Milan Ecopass | Charge | 2008 | 8.2 | 1.0 | −17.6 | 0.5 | Before-after | 11 (middle band) | 58 | Replaced by Area C (2012) |
+| London Congestion Charge | Charge | 2003 | 21.4 | 1.3 | −11.8 | 0.5 | Before-after | 13 |  | GBP 18 a day |
+| Singapore | Charge | 1975 | 6.0 | 1.4 | −44.0 | 0.1 | Before-after | 10 |  | Replaced by ERP (1998) |
+| Stockholm | Charge | 2006 | 30.0 | 8.8 | −21.4 | 0.5 | Adjusted before-after | 3 per crossing |  | SEK 45 per passage at peak |
+| Bergen | Charge | 1986 |  |  | −6.5 | 0.5 | Before-after | 2 per crossing |  | NOK 64 per passage at peak |
+| Gothenburg | Charge | 2013 |  |  | −11.4 | 0.5 | Before-after | 3 per crossing |  | SEK 22 per passage at peak |
+| Oslo | Charge | 1990 |  |  | −4.0 | 0.5 | Before-after | 3 per crossing |  | NOK 47 per passage at peak |
+| Trondheim | Charge | 1991 |  |  | −10.0 | 0.5 | Before-after | 2 per crossing |  | Ended (2005), new toll NOK 44 at peak |
+| Lisbon | LEZ | 2012 | 0.68 | 0.2 | −12.0 | 2.8 | Before-after |  |  | fine EUR 60 to 300 |
+| Madrid Central | LEZ | 2018 | 4.7 | 0.7 | −28.5 | 0.3 | Control | fine 188 |  | Replaced (2021), fine EUR 200 |
+| Glasgow | LEZ | 2023 | 3.1 | 1.0 | −20.5 | 0.3 | Before-after | fine 91 |  | fine GBP 60 |
+| Sheffield (no cars) | LEZ | 2023 | 2.3 | 1.1 | +2.5 | 0.7 | Control | 15 (vans, taxis) |  | GBP 10 a day (vans, taxis) |
+| Birmingham | LEZ | 2021 | 7.8 | 1.1 | −3.4 | 0.5 | Control | 14 | 79.8 | GBP 8 a day |
+| Rome | LEZ | 2001 | 6.0 | 1.3 | −18.0 | 2.5 | Model |  |  | fine EUR 83 to 332 |
+| London ULEZ (2019, central London) | LEZ | 2019 | 21.4 | 1.3 | −19.0 | 0.4 | Control | 23 | 60.9 | GBP 12.50 a day |
+| Bradford (no cars) | LEZ | 2022 | 22.0 | 6.9 | −27.0 | 0.5 | Adjusted before-after | 15 (vans, taxis) | 96.4 | GBP 7 to 9 a day (taxis, vans) |
+| Antwerp | LEZ | 2017 | 22.9 | 7.0 | −12.2 | 5.9 | Control | fine 216 |  | fine EUR 150 |
+| Munich | LEZ | 2008 | 44.0 | 12.8 | +2.4 | 1.0 | Before-after | fine 76 |  | fine EUR 100 |
+| Berlin | LEZ | 2008 | 88.0 | 12.9 | 0.0 | 3.5 | Before-after | fine 76 |  | fine EUR 100 |
+| Amsterdam (trucks only) | LEZ | 2009 | 47.2 | 15.3 | −4.9 | 1.0 | Before-after | fine 286 |  | fine EUR 310 (lorries) |
+| Milan Area B | LEZ | 2019 | 128 | 16.3 | 0.0 | 0.3 | Control | fine 160 |  | fine EUR 83 |
+| Barcelona | LEZ | 2020 | 95.0 | 21.7 | −15.8 | 1.5 | Control | fine 208 |  | fine EUR 200 |
+| Brussels | LEZ | 2018 | 161 | 68.7 | −13.3 | 5.0 | Control | fine 594 | 99.5 | fine EUR 350 |
+| London LEZ (heavy vehicles) | LEZ | 2008 | 1,528 | 92.7 | 0.0 | 1.5 | Before-after | 452 (lorries) |  | GBP 100 or 300 a day (lorries) |
+| London ULEZ expansion to all of London (2023) | LEZ | 2023 | 1,529 | 92.7 | 0.0 | 0.1 | Control | 19 | 92.6 | GBP 12.50 a day |

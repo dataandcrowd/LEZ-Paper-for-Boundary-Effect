@@ -9,6 +9,7 @@ Rapid review of ex-post evaluations of urban congestion charges and low emission
 | Read or edit the paper | `output/manuscript/manuscript_body.md` (edit this), `output/manuscript/manuscript.docx` (built from it) |
 | See the figures | `output/figures/` (Figures 1 and 2, Supplementary Figures S1 to S3) |
 | Check what is left before submission | `output/notes/submission_todo.md` |
+| Find the DOI of every included study, and the full texts still needed | `output/notes/doi_list.md` |
 | Look at the data | `data/database/Boundary_Size_Database_v3.xlsx` |
 
 ## Folders
@@ -22,7 +23,7 @@ data/
   reference/    Zone polygons, World Bank price data, search export
   literature/   Full-text PDFs used for checking (do not share publicly)
 code/
-  1 to 7        Analysis pipeline, run in order (see below)
+  1 to 8        Analysis pipeline, run in order (see below)
   paths.py      Folder locations used by every script
   templates/    Supplementary Information template
   setup/        One-time scripts that built the extraction files and database (kept for the record)
@@ -49,8 +50,9 @@ This runs, in order:
 3. `3_figures_supplementary.py` draws Supplementary Figures S1 to S3 and writes Table 1.
 4. `4_figures_main.py` draws Figures 1 and 2.
 5. `5_make_table1.py` adds size categories to Table 1.
-6. `6_make_si.py` builds the Supplementary Information from the template.
-7. `7_build_manuscript.py` inserts Table 1 into the manuscript and builds the Word files (needs pandoc).
+6. `6_city_evidence.py` lists every estimate by city (Supplementary Tables S12 and S13).
+7. `7_make_si.py` builds the Supplementary Information from the template.
+8. `8_build_manuscript.py` inserts Table 1 into the manuscript and builds the Word files (needs pandoc).
 
 Requires Python 3 with pandas, numpy, scipy, matplotlib, openpyxl and adjustText (`pip install pandas numpy scipy matplotlib openpyxl adjustText`), and pandoc for the Word files.
 

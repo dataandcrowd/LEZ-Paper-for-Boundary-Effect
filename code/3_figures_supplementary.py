@@ -95,16 +95,24 @@ t['Design'] = t.Design_tier.map({1: 'Control', 2: 'Adjusted before-after', 3: 'B
 unit = {'VAL': ' per hour', 'STO': ' per crossing', 'GOT': ' per crossing', 'OSL': ' per crossing', 'BGO': ' per crossing',
         'TRD': ' per crossing', 'DUR': ' per exit', 'SHF': ' (vans, taxis)', 'BRD': ' (vans, taxis)', 'MIL_ECO': ' (middle band)',
         'LON_LEZ08': ' (lorries)'}
-t['Charge or fine (2023 USD PPP)'] = [(f'{c:.0f}' + unit.get(k, '')) if pd.notna(c) else (f'fine {f:.0f}' if pd.notna(f) else '')
+t['Charge or fine at launch (2023 USD PPP)'] = [(f'{c:.0f}' + unit.get(k, '')) if pd.notna(c) else (f'fine {f:.0f}' if pd.notna(f) else '')
                                       for c, f, k in zip(t.Charge_usd, t.Fine_usd, t.Key)]
+# Current (2026) charge or status, from data/extraction/current_charges_*.csv (local currency, checked November 2026)
+from paths import EXTRACT
+cur = pd.concat([pd.read_csv(EXTRACT / f) for f in ('current_charges_cc.csv', 'current_charges_lez.csv') if (EXTRACT / f).exists()] or [pd.DataFrame(columns=['Key'])])
+def current(k):
+    r = cur[cur.Key == k]
+    if r.empty: return ''
+    return str(r.iloc[0].Table_text)
+t['Current charge or status (2026)'] = t.Key.map(current)
 t['Compliant at launch (%)'] = t.Compliance_pct.map(lambda v: '' if pd.isna(v) else f'{v:.1f}'.rstrip('0').rstrip('.'))
-names = {'London CC': 'London central zone', 'London WEZ': 'London Western Extension', 'London ULEZ (2019)': 'London ULEZ (2019, central London)',
+names = {'London CC': 'London Congestion Charge', 'London WEZ': 'London Western Extension', 'London ULEZ (2019)': 'London ULEZ (2019, central London)',
          'London ULEZ expansion (2023)': 'London ULEZ expansion to all of London (2023)', 'London LEZ (HGV)': 'London LEZ (heavy vehicles)', 'Singapore ALS': 'Singapore',
          'Sheffield': 'Sheffield (no cars)', 'Bradford': 'Bradford (no cars)', 'Amsterdam (trucks)': 'Amsterdam (trucks only)'}
 t['Scheme'] = t.Label.replace(names)
 t['Type'] = t.Type.map({'CC': 'Charge', 'LEZ': 'LEZ'})
 t = t.sort_values(['Type', 'Coverage'])
-cols = ['Scheme', 'Type', 'Start_year', 'Zone (km2)', 'Coverage (%)', 'Effect (%)', 'Years', 'Design', 'Charge or fine (2023 USD PPP)', 'Compliant at launch (%)']
+cols = ['Scheme', 'Type', 'Start_year', 'Zone (km2)', 'Coverage (%)', 'Effect (%)', 'Years', 'Design', 'Charge or fine at launch (2023 USD PPP)', 'Compliant at launch (%)', 'Current charge or status (2026)']
 out = t[cols].rename(columns={'Start_year': 'Start'})
 out.to_csv(f'{T}/table1.csv', index=False)
 md = '| ' + ' | '.join(c.replace('km2', 'km\u00b2') for c in out.columns) + ' |\n|' + '---|' * len(out.columns) + '\n'

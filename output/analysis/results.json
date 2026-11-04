@@ -1,16 +1,16 @@
 {
  "CC": {
-  "n_schemes_with_effect": 12,
-  "n_with_area": 8,
+  "n_schemes_with_effect": 10,
+  "n_with_area": 6,
   "coverage_all": {
-   "n": 8,
-   "rho": -0.563,
-   "p": 0.146
+   "n": 6,
+   "rho": -0.754,
+   "p": 0.084
   },
   "km2_all": {
-   "n": 8,
-   "rho": 0.731,
-   "p": 0.04
+   "n": 6,
+   "rho": 0.406,
+   "p": 0.425
   },
   "coverage_journal_only": {
    "n": 5,
@@ -27,9 +27,9 @@
    "rho": null,
    "p": null
   },
-  "median_effect": -13.15,
+  "median_effect": -11.625,
   "effect_range": [
-   -85.0,
+   -44.0,
    -4.0
   ],
   "coverage_range_pct": [
@@ -37,24 +37,24 @@
    8.8
   ],
   "charge_to_income_vs_effect": {
-   "n": 12,
-   "rho": -0.434,
-   "p": 0.159
+   "n": 10,
+   "rho": -0.6,
+   "p": 0.067
   },
   "charge_to_income_vs_coverage": {
-   "n": 8,
-   "rho": -0.18,
-   "p": 0.67
+   "n": 6,
+   "rho": -0.464,
+   "p": 0.354
   },
   "coverage_excl_durham": {
-   "n": 7,
-   "rho": -0.45,
-   "p": 0.31
+   "n": 6,
+   "rho": -0.754,
+   "p": 0.084
   },
   "km2_excl_durham": {
-   "n": 7,
-   "rho": 0.595,
-   "p": 0.159
+   "n": 6,
+   "rho": 0.406,
+   "p": 0.425
   },
   "km2_journal_only": {
    "n": 5,
@@ -62,22 +62,21 @@
    "p": 0.935
   },
   "km2_excl_durham_singapore": {
-   "n": 6,
-   "rho": 0.406,
-   "p": 0.425
+   "n": 5,
+   "rho": -0.051,
+   "p": 0.935
   },
   "by_tercile": {
    "small": {
-    "n": 3,
-    "median_effect": -14.5,
+    "n": 2,
+    "median_effect": -12.75,
     "coverage_pct_range": [
      0.79,
      1.0
     ],
     "schemes": [
      "Milan Area C",
-     "New York",
-     "Valletta"
+     "New York"
     ]
    },
    "medium": {
@@ -93,14 +92,13 @@
     ]
    },
    "large": {
-    "n": 3,
-    "median_effect": -44.0,
+    "n": 2,
+    "median_effect": -32.7,
     "coverage_pct_range": [
      1.37,
      8.8
     ],
     "schemes": [
-     "Durham",
      "Singapore ALS",
      "Stockholm"
     ]
@@ -137,7 +135,7 @@
   },
   "median_effect": -12.0,
   "effect_range": [
-   -28.6,
+   -28.5,
    2.5
   ],
   "coverage_range_pct": [
@@ -261,16 +259,6 @@
  },
  "size_categories": {
   "CC": {
-   "Street (<1 km\u00b2)": {
-    "n": 2,
-    "median": -55.0,
-    "median_excl_ns_zero": -55.0,
-    "n_control": 0,
-    "schemes": [
-     "Durham (-85.0)",
-     "Valletta (-25.0)"
-    ]
-   },
    "City centre (1-10 km\u00b2)": {
     "n": 3,
     "median": -17.6,
@@ -322,7 +310,7 @@
     "schemes": [
      "Birmingham (-3.4)",
      "Glasgow (-20.5)",
-     "Madrid Central (-28.6)",
+     "Madrid Central (-28.5)",
      "Rome (-18.0)",
      "Sheffield (+2.5)"
     ]
@@ -480,6 +468,51 @@
    "Scheme": "Munich selective diesel ban within LEZ (Feb 2023)",
    "Outcome": "NO2",
    "Effect_pct": -9.4
+  },
+  {
+   "Scheme": "London Congestion Charge (central zone; tightened rules from late 2015)",
+   "Outcome": "NO2",
+   "Effect_pct": -4.8
+  },
+  {
+   "Scheme": "London Congestion Charge (central zone; tightened rules from late 2015)",
+   "Outcome": "PM10",
+   "Effect_pct": -4.9
+  },
+  {
+   "Scheme": "London Congestion Charge (central zone; tightened rules from late 2015)",
+   "Outcome": "PM2.5",
+   "Effect_pct": -5.6
+  },
+  {
+   "Scheme": "Stockholm congestion tax (end of green-vehicle exemption, 1 Jul 2012)",
+   "Outcome": "Traffic",
+   "Effect_pct": -32.8
+  },
+  {
+   "Scheme": "Bergen toll ring (1986) with time-differentiated rush-hour charge (1 Feb 2016)",
+   "Outcome": "Traffic",
+   "Effect_pct": -14.0
+  },
+  {
+   "Scheme": "Bergen toll ring (1986) with time-differentiated rush-hour charge (1 Feb 2016)",
+   "Outcome": "Traffic",
+   "Effect_pct": -5.5
+  },
+  {
+   "Scheme": "Bergen toll ring (1986) with time-differentiated rush-hour charge (1 Feb 2016)",
+   "Outcome": "NO2",
+   "Effect_pct": -9.5
+  },
+  {
+   "Scheme": "Bergen toll ring (1986) with time-differentiated rush-hour charge (1 Feb 2016)",
+   "Outcome": "NO2",
+   "Effect_pct": -11.0
+  },
+  {
+   "Scheme": "Bergen toll ring (1986) with time-differentiated rush-hour charge (1 Feb 2016)",
+   "Outcome": "PM10",
+   "Effect_pct": -10.5
   }
  ],
  "pooled": [
@@ -566,13 +599,27 @@
    "Effect_pct": 0.0,
    "Years_in_operation_at_measurement": 2.0,
    "Design": "DiD"
+  },
+  {
+   "Scheme": "German Umweltzonen, staggered adoption 2008 to 2019 (27 waves, all stages)",
+   "Outcome": "PM10",
+   "Effect_pct": -4.92,
+   "Years_in_operation_at_measurement": 1.0,
+   "Design": "DiD"
+  },
+  {
+   "Scheme": "German Umweltzonen, staggered adoption 2008 to 2019 (27 waves, all stages)",
+   "Outcome": "NO2",
+   "Effect_pct": -3.68,
+   "Years_in_operation_at_measurement": 1.0,
+   "Design": "DiD"
   }
  ],
  "counts": {
-  "effect_rows_total": 115,
-  "main_rows": 58,
-  "articles": 61,
-  "schemes_with_headline": 29,
-  "schemes_in_fig1": 25
+  "effect_rows_total": 199,
+  "main_rows": 60,
+  "articles": 92,
+  "schemes_with_headline": 27,
+  "schemes_in_fig1": 23
  }
 }
