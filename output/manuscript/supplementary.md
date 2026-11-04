@@ -11,7 +11,7 @@ date: "Draft 4 (rapid review), 3 November 2026"
 
 **Second search for congestion charges (November 2026).** For each congestion charging city (London, Stockholm, Gothenburg, Milan, Singapore, New York, Oslo, Bergen, Trondheim, Valletta and Durham), peer-reviewed journal articles reporting ex-post changes in traffic or air quality were searched in Crossref, OpenAlex, Semantic Scholar and publisher pages. Working papers, preprints, conference papers, theses and agency reports were excluded. This added 36 rows from 16 articles (Table S12). The same search was then run for low emission zones (UK, southern Europe, France and Poland, Benelux and Germany, Asia, Latin America and Africa), adding 48 rows from 17 articles (Table S13). Street-specific diesel bans and city-wide licence-plate rationing were excluded because they have no bounded zone. Numbers were taken from abstracts or open full texts, and four Milan articles report only the direction of change in their abstracts.
 
-**Extraction.** One row per scheme, outcome and measurement time. Fields: outcome metric, percentage change (negative = reduction), measurement location, years in operation at the midpoint of the evaluation window, design, spillover, citation and DOI. Where only an absolute change was reported, the percentage was computed against the baseline mean stated in the paper and flagged. Full extraction: 199 rows from 92 sources, 87 with a DOI (deposited files cc_effects.csv and lez_effects.csv).
+**Extraction.** One row per scheme, outcome and measurement time. Fields: outcome metric, percentage change (negative = reduction), measurement location, years in operation at the midpoint of the evaluation window, design, spillover, citation and DOI. Where only an absolute change was reported, the percentage was computed against the baseline mean stated in the paper and flagged. Full extraction: 204 rows from 92 sources, 87 with a DOI (deposited files cc_effects.csv and lez_effects.csv).
 
 # S2. Eligibility and departures from a systematic review
 
@@ -33,7 +33,7 @@ Primary outcome: traffic volume for congestion charges (cordon crossings preferr
 
 Design types (charted as descriptors, not as a quality score): (1) untreated control group or natural experiment (difference-in-differences, synthetic control, regression discontinuity in time, interrupted time series with a control or natural experiment, namely Gibson and Carnovale 2015, Maranzano et al. 2020, Atkinson et al. 2009), (2) before-after adjusted for external factors without a control (interrupted time series without control, for example Börjesson and Kristoffersson 2018, Bryant et al. 2025, Hajmohammadi and Heydecker 2022), (3) before-after, raw or against a reference site, (4) model-based. Headline estimate per scheme phase: earliest duration band (under 1.5 years, 1.5 to under 4, 4 or more), then best design tier, then the median if several remain. Years in operation is the midpoint of the evaluation window, or the window end for cumulative trend estimates (Antwerp, Brussels). Persistence ratio: latest divided by earliest estimate for one metric from one source, for schemes with two or more measurement times.
 
-Phases: schemes whose boundary changed were split into phases (the London ULEZ at its 2019 launch in central London and after its 2023 expansion to all of London, with no peer-reviewed estimate for the 2021 expansion to inner London). London's Low Emission Zone for heavy vehicles (from 2008) is a separate scheme from the ULEZ, giving 30 scheme phases. Rome's limited traffic zone is permit-based and is grouped with LEZs. Estimates reported only as not significant without a point estimate were charted as zero (Berlin NO₂, Gu et al., 2022, Milan Area B, Maranzano et al., 2020, London LEZ for heavy vehicles, Wood et al., 2015, 2023 ULEZ expansion, Tong et al., 2025, whose point estimates appear only in their supplementary tables and should be extracted). Other non-significant estimates kept their reported point values (Munich, Sheffield, Bradford).
+Phases: schemes whose boundary changed were split into phases (the London ULEZ at its 2019 launch in central London and after its 2023 expansion to all of London, with no peer-reviewed estimate for the 2021 expansion to inner London). London's Low Emission Zone for heavy vehicles (from 2008) is a separate scheme from the ULEZ, giving 27 scheme phases with a headline estimate after the exclusions below. Rome's limited traffic zone is permit-based and is grouped with LEZs. Estimates reported only as not significant without a point estimate were charted as zero (Berlin NO₂, Gu et al., 2022, Milan Area B, Maranzano et al., 2020, London LEZ for heavy vehicles, Wood et al., 2015). The 2023 ULEZ expansion is charted at its point estimate for traffic sites in outer London, the area added in 2023 (+1.34%, 95% interval −2.27% to +4.98%, Tong et al., 2025, Supplementary Table S6), and is not significant. Other non-significant estimates kept their reported point values (Munich, Sheffield, Bradford).
 
 Zone area rule: the area of the zone in which the effect was measured. This gives Lisbon Zone 1 (0.68 km²) for the Zone 1 NO₂ estimate. In Table S4 the enlarged zone is shown at its total area (38.4 km² for the London charge with the Western Extension, 25.14 km² for Lisbon Zones 1 and 2), although the London estimate was measured in the added 17 km² only. Table S9 shows the alternatives. Rome's −18% is paired with the 6 km² limited traffic zone. Cesaroni et al. (2012) report −4.13 and −2.99 µg/m³ for the two zones without labelling them in the abstract, and the pairing with the inner zone is inferred from their exposure results.
 
@@ -68,7 +68,7 @@ Zone area: preferred value from the evaluation article, otherwise official docum
 | Lisbon | Annual mean NO2, Zone 1 (city centre), 2009 to 2016 | -12.0 | Before-after | Santos et al. (2019), doi:10.1016/j.jhazmat.2018.11.061 | journal article |
 | London LEZ (HGV) | Modelled annual NO2 at children's addresses, first three years | 0.0 | Before-after | Wood et al. (2015), doi:10.1371/journal.pone.0109121 | journal article |
 | London ULEZ (2019) | Median of 5 estimates, e.g. Roadside NO2 vs synthetic control, 3 months | -19.0 | Control or natural experiment | Tong et al. (2025), doi:10.1038/s44407-025-00030-9 and Prieto-Rodriguez et al. (2022), doi:10.1016/j.tranpol.2022.10.010 | journal article |
-| London ULEZ expansion (2023) | NO2 vs synthetic control, 3 months | 0.0 | Control or natural experiment | Tong et al. (2025), doi:10.1038/s44407-025-00030-9 | journal article |
+| London ULEZ expansion (2023) | Median of 3 estimates, e.g. NO2 at traffic sites in outer London (the area added in 2023) vs synthetic control, 3 months | 1.3 | Control or natural experiment | Tong et al. (2025), doi:10.1038/s44407-025-00030-9 | journal article |
 | Madrid Central | Median of 3 estimates, e.g. NO2 at Plaza del Carmen (urban background, only station inside zone), DiD vs stations outside M30 and regional controls | -28.5 | Control or natural experiment | Salas et al. (2021), doi:10.1016/j.trd.2020.102689 and Gómez-Losada and Pires (2024), doi:10.1016/j.uclim.2024.101995 and Galdon-Sanchez et al. (2023), doi:10.1093/jeea/jvac064 | journal article |
 | Milan Area B | NO2 and NOx, unobserved components intervention model with neighbouring-city counterfactual, to Sep 2019 | 0.0 | Control or natural experiment | Maranzano et al. (2020), doi:10.3390/ijerph17031088 | journal article |
 | Munich | NO2 at traffic sites, GAMM | 2.4 | Before-after | Gu et al. (2022), doi:10.1016/j.jenvman.2021.114048 | journal article |
@@ -119,7 +119,7 @@ Median headline effect (%) by size category. Estimates reported only as not sign
 | LEZ (NO₂) | City centre (1 to 10 km²) | 5 | −18.0 | −18.0 | 3 | Birmingham (−3.4), Glasgow (−20.5), Madrid Central (−28.5), Rome (−18.0), Sheffield (+2.5) |
 | LEZ (NO₂) | Inner city (10 to 50 km²) | 5 | −12.2 | −12.2 | 2 | Amsterdam (trucks) (−4.9), Antwerp (−12.2), Bradford (−27.0), London ULEZ (2019) (−19.0), Munich (+2.4) |
 | LEZ (NO₂) | Whole city (50 to 500 km²) | 4 | −6.7 | −14.6 | 3 | Barcelona (−15.8), Berlin (+0.0), Brussels (−13.3), Milan Area B (+0.0) |
-| LEZ (NO₂) | Metropolitan (>500 km²) | 2 | 0.0 |  | 1 | London LEZ (HGV) (+0.0), London ULEZ expansion (2023) (+0.0) |
+| LEZ (NO₂) | Metropolitan (>500 km²) | 2 | 0.7 |  | 1 | London LEZ (HGV) (+0.0), London ULEZ expansion (2023) (+1.3) |
 
 # Table S4. Original and enlarged zones in the same city (Figure 2)
 
@@ -128,7 +128,7 @@ Median headline effect (%) by size category. Estimates reported only as not sign
 | London Congestion charge | Traffic | Central zone | 2003 | 21.4 | −11.8 | Before-after | Inside the central zone | Givoni (2012), doi:10.1177/0042098011417017 | Vehicle-km inside the zone in charging hours. |
 | London Congestion charge | Traffic | Plus Western Extension | 2007 | 38.4 | −5.0 | DiD | Inside the added area (17 km²) | Ait Bihi Ouali et al. (2021), doi:10.1371/journal.pone.0253881 | Annual average daily flows. The extension was removed in 2011 with no significant change in total traffic in the former extension (same source). |
 | London Ultra Low Emission Zone | NO₂ | Central London | 2019 | 21.4 | −19.6 | Synthetic control | Inside the central zone | Tong et al. (2025), doi:10.1038/s44407-025-00030-9 | Roadside NO2 after three months (the same window as the 2023 expansion estimate). 61% of entering vehicles compliant at launch. An inner London stage (2021) has no peer-reviewed estimate. |
-| London Ultra Low Emission Zone | NO₂ | All of London | 2023 | 1,529 | 0 (not significant) | Synthetic control | Inside the expanded zone | Tong et al. (2025), doi:10.1038/s44407-025-00030-9 | Not significant for NO2. 92.6% of entering vehicles compliant at launch. |
+| London Ultra Low Emission Zone | NO₂ | All of London | 2023 | 1,529 | 0 (not significant) | Synthetic control | Inside the expanded zone | Tong et al. (2025), doi:10.1038/s44407-025-00030-9 | Not significant: +1.34% (95% CI -2.27% to +4.98%) at traffic sites in outer London, the area added in 2023 (Supplementary Table S6). 92.6% of entering vehicles compliant at launch. |
 | Lisbon Low emission zone | NO₂ | Zone 1 | 2011 | 0.68 | −12.0 | Before-after | Inside Zone 1 | Santos et al. (2019), doi:10.1016/j.jhazmat.2018.11.061 | Annual mean NO2 2009 to 2016. Zone 1 has the stricter standard (Euro 2 from 2012 and Euro 3 from 2015). |
 | Lisbon Low emission zone | NO₂ | Zones 1 and 2 | 2012 | 25.14 | −22.0 | Before-after | Inside the Zone 2 ring | Santos et al. (2019), doi:10.1016/j.jhazmat.2018.11.061 | Annual mean NO2 2009 to 2016. Zone 2 has the looser standard (Euro 1 from 2012 and Euro 2 from 2015). |
 
@@ -201,21 +201,21 @@ A positive ρ means larger values go with effects closer to zero (smaller reduct
 
 | Analysis | Congestion charges (traffic) | Low emission zones (NO₂) |
 |---|---|---|
-| Relative coverage, all (main) | ρ = -0.754, n = 6, p = 0.084 | ρ = 0.371, n = 17, p = 0.142 |
-| Absolute area (km²), all | ρ = 0.406, n = 6, p = 0.425 | ρ = 0.334, n = 17, p = 0.19 |
-| Relative coverage, journal evidence only | ρ = -0.667, n = 5, p = 0.219 | ρ = 0.371, n = 17, p = 0.142 |
+| Relative coverage, all (main) | ρ = -0.754, n = 6, p = 0.084 | ρ = 0.383, n = 17, p = 0.129 |
+| Absolute area (km²), all | ρ = 0.406, n = 6, p = 0.425 | ρ = 0.344, n = 17, p = 0.176 |
+| Relative coverage, journal evidence only | ρ = -0.667, n = 5, p = 0.219 | ρ = 0.383, n = 17, p = 0.129 |
 | Absolute area, journal evidence only | ρ = -0.051, n = 5, p = 0.935 | |
-| Relative coverage, control or natural experiment only | n/a | ρ = 0.176, n = 9, p = 0.651 |
-| Relative coverage, control or adjusted designs | n/a | ρ = 0.231, n = 10, p = 0.521 |
+| Relative coverage, control or natural experiment only | n/a | ρ = 0.2, n = 9, p = 0.606 |
+| Relative coverage, control or adjusted designs | n/a | ρ = 0.248, n = 10, p = 0.489 |
 | Relative coverage, excluding Durham | ρ = -0.754, n = 6, p = 0.084 | |
 | Absolute area, excluding Durham | ρ = 0.406, n = 6, p = 0.425 | |
 | Absolute area, excluding Durham and Singapore | ρ = -0.051, n = 5, p = 0.935 | |
-| Relative coverage, LEZs covering private cars | | ρ = 0.47, n = 13, p = 0.105 |
-| Relative coverage, LEZs covering cars, control only | | ρ = 0.491, n = 8, p = 0.217 |
-| Relative coverage, excluding four estimates reported only as not significant and charted as zero | | ρ = 0.159, n = 13, p = 0.603 |
+| Relative coverage, LEZs covering private cars | | ρ = 0.487, n = 13, p = 0.091 |
+| Relative coverage, LEZs covering cars, control only | | ρ = 0.524, n = 8, p = 0.183 |
+| Relative coverage, excluding four estimates reported only as not significant and charted as zero | | ρ = 0.266, n = 14, p = 0.358 |
 | Relative coverage, excluding the 2023 ULEZ expansion | | ρ = 0.319, n = 16, p = 0.229 |
-| Lisbon Zone 2 effect (−22%) with Zone 2 area (25.14 km²) | | ρ = 0.425, n = 17, p = 0.089 |
-| As above, LEZs covering cars | | ρ = 0.613, n = 13, p = 0.026 |
+| Lisbon Zone 2 effect (−22%) with Zone 2 area (25.14 km²) | | ρ = 0.437, n = 17, p = 0.079 |
+| As above, LEZs covering cars | | ρ = 0.63, n = 13, p = 0.021 |
 | Charge relative to income vs effect | ρ = -0.6, n = 10, p = 0.067 | |
 | Charge relative to income vs coverage | ρ = -0.464, n = 6, p = 0.354 | |
 | Compliance at launch vs effect | | ρ = -0.1, n = 5, p = 0.873 |
@@ -368,7 +368,12 @@ All peer-reviewed estimates charted for low emission zones, including those not 
 | London | LEZ for heavy vehicles (Feb 2008) | PM10 | Measured PM10 trend at London monitors, 2008 to 2013 | not significant | 2.9 | Before-after | Not charted | Mudway et al. (2019), doi:10.1016/S2468-2667(18)30202-0 |
 | London | LEZ for heavy vehicles (Feb 2008), phase I | PM10 | Roadside PM10 inside zone, stepwise DiD | +14.8 | 0.5 | Control or natural experiment | Secondary | Zhai and Wolff (2021), doi:10.1007/s10018-021-00307-9 |
 | London | LEZ for heavy vehicles (Feb 2008), phase II | PM10 | Roadside PM10 inside zone, stepwise DiD | −5.5 | 2.0 | Control or natural experiment | Secondary | Zhai and Wolff (2021), doi:10.1007/s10018-021-00307-9 |
-| London | ULEZ Greater London (Aug 2023) | NO₂ | NO2 vs synthetic control, 3 months | +0.0 | 0.1 | Control or natural experiment | Headline candidate | Tong et al. (2025), doi:10.1038/s44407-025-00030-9 |
+| London | ULEZ Greater London (Aug 2023) | Fleet | Share of non-compliant vehicles in the London-wide zone, Aug 2023 to Sep 2023 | −36.5 | 0.1 | Before-after | Secondary | Tong et al. (2025), doi:10.1038/s44407-025-00030-9 |
+| London | ULEZ Greater London (Aug 2023) | NO₂ | NO2 at traffic sites in outer London (the area added in 2023) vs synthetic control, 3 months | +1.3 | 0.1 | Control or natural experiment | Headline candidate | Tong et al. (2025), doi:10.1038/s44407-025-00030-9 |
+| London | ULEZ Greater London (Aug 2023) | NO₂ | NO2 at urban background sites in outer London vs synthetic control, 3 months | +1.8 | 0.2 | Control or natural experiment | Headline candidate | Tong et al. (2025), doi:10.1038/s44407-025-00030-9 |
+| London | ULEZ Greater London (Aug 2023) | NO₂ | NO2 at traffic sites in outer London vs synthetic control, 6 months | +0.5 | 0.5 | Control or natural experiment | Headline candidate | Tong et al. (2025), doi:10.1038/s44407-025-00030-9 |
+| London | ULEZ Greater London (Aug 2023) | NOₓ | NOx at traffic sites in outer London vs synthetic control, 3 months | −0.1 | 0.2 | Control or natural experiment | Secondary | Tong et al. (2025), doi:10.1038/s44407-025-00030-9 |
+| London | ULEZ Greater London (Aug 2023) | PM2.5 | PM2.5 at traffic sites in outer London vs synthetic control, 3 months | −7.5 | 0.2 | Control or natural experiment | Secondary | Tong et al. (2025), doi:10.1038/s44407-025-00030-9 |
 | London | ULEZ central (Apr 2019) | Fleet | Share of non-compliant vehicles detected in central London zone, Mar 2019 vs Sep 2019 | −34.0 | 0.4 | Before-after | Secondary | Tong et al. (2025), doi:10.1038/s44407-025-00030-9 |
 | London | ULEZ central (Apr 2019) | NO₂ | Roadside NO2 vs synthetic control, 3 months | −19.6 | 0.1 | Control or natural experiment | Headline candidate | Tong et al. (2025), doi:10.1038/s44407-025-00030-9 |
 | London | ULEZ central (Apr 2019) | NO₂ | Urban background NO2 vs synthetic control, 3 months | −8.2 | 0.1 | Control or natural experiment | Headline candidate | Tong et al. (2025), doi:10.1038/s44407-025-00030-9 |

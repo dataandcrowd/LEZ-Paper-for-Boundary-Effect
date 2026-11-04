@@ -26,4 +26,4 @@
 | Milan Area B | LEZ | 2019 | 128 | Whole city | 16.3 | 0.0 | 0.3 | Control | fine 160 |  | fine EUR 83 |
 | Brussels | LEZ | 2018 | 161 | Whole city | 68.7 | −13.3 | 5.0 | Control | fine 594 | 99.5 | fine EUR 350 |
 | London LEZ (heavy vehicles) | LEZ | 2008 | 1,528 | Metropolitan | 92.7 | 0.0 | 1.5 | Before-after | 452 (lorries) |  | GBP 100 or 300 a day (lorries) |
-| London ULEZ expansion to all of London (2023) | LEZ | 2023 | 1,529 | Metropolitan | 92.7 | 0.0 | 0.1 | Control | 19 | 92.6 | GBP 12.50 a day |
+| London ULEZ expansion to all of London (2023) | LEZ | 2023 | 1,529 | Metropolitan | 92.7 | +1.3 | 0.2 | Control | 19 | 92.6 | GBP 12.50 a day |

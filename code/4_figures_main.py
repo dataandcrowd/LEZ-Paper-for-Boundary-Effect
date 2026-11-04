@@ -57,7 +57,7 @@ for ax, (t, o, col, title, clist) in zip(axes, [('CC', 'Traffic', BLUE, 'A. Cong
 axes[1].set_ylim(-32, 6)
 h = [     Line2D([], [], marker='o', ls='', mfc=MUTED, mec=MUTED, label='Control group or natural experiment'),
      Line2D([], [], marker='o', ls='', mfc='white', mec=MUTED, mew=1.6, label='Before-after or model'),
-     Line2D([], [], marker='D', ls='', mfc='white', mec=MUTED, mew=1.4, label='Not significant, no point estimate (at 0)')]
+     Line2D([], [], marker='D', ls='', mfc='white', mec=MUTED, mew=1.4, label='Not significant (at 0 if no point estimate)')]
 fig.legend(handles=h, loc='lower center', ncol=4, frameon=False, fontsize=8, bbox_to_anchor=(0.5, -0.01))
 fig.tight_layout(rect=(0, 0.06, 1, 1)); fig.savefig(f'{W}/fig1_size_categories.png', dpi=300); fig.savefig(f'{W}/fig1_size_categories.pdf'); plt.close(fig)
 
@@ -74,7 +74,7 @@ for ax, (pair, g) in zip(axes, bp.groupby('Pair')):
         mk = 'D' if r.Not_significant == 'Y' else 'o'
         ax.scatter(x, r.Effect_pct, s=70, marker=mk, facecolor=col if r.Design_tier == 1 else 'white',
                    edgecolor=col, linewidth=1.8, zorder=4)
-        v = 'n.s.' if r.Not_significant == 'Y' else f'{r.Effect_pct:+.0f}%'.replace('-', '\u2212')
+        v = f'{r.Effect_pct:+.0f}%'.replace('-', '\u2212') + (' (n.s.)' if r.Not_significant == 'Y' else '')
         ax.annotate(v, (x, r.Effect_pct), xytext=(10, 0), textcoords='offset points', va='center', fontsize=8.5, color=INK)
     ax.set_xticks([0, 1])
     ax.set_xticklabels([f"{r.Step_label}\n{r.Zone_km2:,.4g} km² ({r.Year})" for _, r in g.iterrows()], fontsize=7.6)
@@ -82,7 +82,7 @@ for ax, (pair, g) in zip(axes, bp.groupby('Pair')):
 axes[0].set_ylim(-26, 4); axes[0].set_ylabel('Reported change inside zone (%)')
 h = [Line2D([], [], marker='o', ls='', mfc=MUTED, mec=MUTED, label='Control group'),
      Line2D([], [], marker='o', ls='', mfc='white', mec=MUTED, mew=1.6, label='Before-after'),
-     Line2D([], [], marker='D', ls='', mfc=MUTED, mec=MUTED, label='Not significant (plotted at 0)')]
+     Line2D([], [], marker='D', ls='', mfc=MUTED, mec=MUTED, label='Not significant')]
 fig.legend(handles=h, frameon=False, fontsize=8, loc='lower center', ncol=3, bbox_to_anchor=(0.5, -0.02))
 fig.tight_layout(rect=(0, 0.06, 1, 1)); fig.savefig(f'{W}/fig2_boundary_size_within_city.png', dpi=300, bbox_inches='tight')
 fig.savefig(f'{W}/fig2_boundary_size_within_city.pdf', bbox_inches='tight'); plt.close(fig)

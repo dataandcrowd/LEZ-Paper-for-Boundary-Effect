@@ -116,7 +116,7 @@ R['LEZ']['coverage_cars_counterfactual'] = sp(g[(g.Cars_covered == 'Y') & (g.Des
 R['LEZ']['coverage_excl_london_2023'] = sp(g[g.Key != 'LON_ULEZ23'].Coverage, g[g.Key != 'LON_ULEZ23'].Effect_pct)
 g = ds[(ds.Type == 'LEZ') & (ds.Outcome == 'NO2')].copy()
 alt = g.copy(); i = alt.Key == 'LIS'; alt.loc[i, 'Effect_pct'] = -22.0; alt.loc[i, 'Coverage'] = 25.14 / alt.loc[i, 'Builtup_km2']
-NS_ZERO = {'BERLIN', 'LON_LEZ08', 'LON_ULEZ23', 'MIL_B'}  # reported only as not significant, charted as 0
+NS_ZERO = {'BERLIN', 'LON_LEZ08', 'MIL_B'}  # reported only as not significant, charted as 0
 gz = ds[(ds.Type == 'LEZ') & (ds.Outcome == 'NO2') & ~ds.Key.isin(NS_ZERO)]
 R['LEZ']['coverage_excl_ns_zero'] = sp(gz.Coverage, gz.Effect_pct)
 R['LEZ']['ns_zero_schemes'] = sorted(ds[ds.Key.isin(NS_ZERO)].Label.tolist())
@@ -133,7 +133,7 @@ for t, o in [('CC', 'Traffic'), ('LEZ', 'NO2')]:
                                    'schemes': v.Label.tolist()} for k, v in g.groupby('tercile', observed=True)}
 
 # Size categories (descriptive medians)
-NSZ = {'BERLIN', 'LON_LEZ08', 'LON_ULEZ23', 'MIL_B'}
+NSZ = {'BERLIN', 'LON_LEZ08', 'LON_ULEZ23', 'MIL_B'}  # not significant (ULEZ 2023 has a point estimate, the others are charted as 0)
 R['size_categories'] = {}
 for t_, o_ in [('CC', 'Traffic'), ('LEZ', 'NO2')]:
     g = ds[(ds.Type == t_) & (ds.Outcome == o_) & (ds.Size_category != '')]
@@ -170,6 +170,8 @@ for k, g in m.groupby('Phase_key'):
 dr = pd.DataFrame(dur); dr.to_csv(f'{W}/duration_rows.csv', index=False)
 pers = []
 for k, g in dr.groupby('Key'):
+    if k == 'LON_ULEZ23':  # all estimates not significant, so a ratio is not meaningful
+        continue
     g = g.sort_values('Years'); e0, e1 = g.Effect_pct.iloc[0], g.Effect_pct.iloc[-1]
     pers.append(dict(Key=k, Label=g.Label.iloc[0], Type=g.Type.iloc[0], first_years=float(g.Years.iloc[0]),
                      last_years=float(g.Years.iloc[-1]), first=float(e0), last=float(e1),
