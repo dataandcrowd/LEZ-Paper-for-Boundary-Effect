@@ -13,11 +13,11 @@
 | Lisbon | LEZ | 2012 | 0.68 | 0.2 | −12.0 | 2.8 | Before-after |  |  | fine EUR 60 to 300 |
 | Madrid Central | LEZ | 2018 | 4.7 | 0.7 | −28.5 | 0.3 | Control | fine 188 |  | Replaced (2021), fine EUR 200 |
 | Glasgow | LEZ | 2023 | 3.1 | 1.0 | −20.5 | 0.3 | Before-after | fine 91 |  | fine GBP 60 |
-| Sheffield (no cars) | LEZ | 2023 | 2.3 | 1.1 | +2.5 | 0.7 | Control | 15 (vans, taxis) |  | GBP 10 a day (vans, taxis) |
-| Birmingham | LEZ | 2021 | 7.8 | 1.1 | −3.4 | 0.5 | Control | 14 | 79.8 | GBP 8 a day |
-| Rome | LEZ | 2001 | 6.0 | 1.3 | −18.0 | 2.5 | Model |  |  | fine EUR 83 to 332 |
+| Sheffield CAZ (no cars) | LEZ | 2023 | 2.4 | 1.1 | +2.5 | 0.7 | Control | 15 (vans, taxis) |  | GBP 10 a day (vans, taxis) |
+| Birmingham CAZ | LEZ | 2021 | 7.7 | 1.1 | −3.4 | 0.5 | Control | 14 | 79.8 | GBP 8 a day |
+| Rome ZTL | LEZ | 2001 | 6.0 | 1.3 | −18.0 | 2.5 | Model |  |  | fine EUR 83 to 332 |
 | London ULEZ (2019, central London) | LEZ | 2019 | 21.4 | 1.3 | −19.0 | 0.4 | Control | 23 | 60.9 | GBP 12.50 a day |
-| Bradford (no cars) | LEZ | 2022 | 22.0 | 6.9 | −27.0 | 0.5 | Adjusted before-after | 15 (vans, taxis) | 96.4 | GBP 7 to 9 a day (taxis, vans) |
+| Bradford CAZ (no cars) | LEZ | 2022 | 22.0 | 6.9 | −27.0 | 0.5 | Adjusted before-after | 15 (vans, taxis) | 96.4 | GBP 7 to 9 a day (taxis, vans) |
 | Antwerp | LEZ | 2017 | 22.9 | 7.0 | −12.2 | 5.9 | Control | fine 216 |  | fine EUR 150 |
 | Munich | LEZ | 2008 | 44.0 | 12.8 | +2.4 | 1.0 | Before-after | fine 76 |  | fine EUR 100 |
 | Berlin | LEZ | 2008 | 88.0 | 12.9 | 0.0 | 3.5 | Before-after | fine 76 |  | fine EUR 100 |

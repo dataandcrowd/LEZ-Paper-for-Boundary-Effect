@@ -108,7 +108,7 @@ t['Current charge or status (2026)'] = t.Key.map(current)
 t['Compliant at launch (%)'] = t.Compliance_pct.map(lambda v: '' if pd.isna(v) else f'{v:.1f}'.rstrip('0').rstrip('.'))
 names = {'London CC': 'London Congestion Charge', 'London WEZ': 'London Western Extension', 'London ULEZ (2019)': 'London ULEZ (2019, central London)',
          'London ULEZ expansion (2023)': 'London ULEZ expansion to all of London (2023)', 'London LEZ (HGV)': 'London LEZ (heavy vehicles)', 'Singapore ALS': 'Singapore',
-         'Sheffield': 'Sheffield (no cars)', 'Bradford': 'Bradford (no cars)', 'Amsterdam (trucks)': 'Amsterdam (trucks only)'}
+         'Sheffield CAZ': 'Sheffield CAZ (no cars)', 'Bradford CAZ': 'Bradford CAZ (no cars)', 'Amsterdam (trucks)': 'Amsterdam (trucks only)'}
 t['Scheme'] = t.Label.replace(names)
 t['Type'] = t.Type.map({'CC': 'Charge', 'LEZ': 'LEZ'})
 t = t.sort_values(['Type', 'Coverage'])
@@ -120,3 +120,30 @@ for _, r in out.iterrows():
     md += '| ' + ' | '.join('' if (isinstance(v, float) and pd.isna(v)) else str(int(v)) if isinstance(v, float) else str(v) for v in r) + ' |\n'
 open(f'{T}/table1.md', 'w').write(md)
 print(md)
+
+# Figure S4: flow of schemes and studies (counts from results.json, computed in 2_merge_and_analyse.py)
+import json
+from matplotlib.patches import FancyBboxPatch
+FL = json.load(open(f'{W}/results.json'))['flow']
+fig, ax = plt.subplots(figsize=(8.6, 7.4)); ax.set_xlim(0, 100); ax.set_ylim(0, 100); ax.axis('off')
+def box(x, y, w, h, text, fc='white', ec='#52514e', fs=8.5):
+    ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle='round,pad=0.3,rounding_size=1.2', fc=fc, ec=ec, lw=1))
+    ax.text(x + w / 2, y + h / 2, text, ha='center', va='center', fontsize=fs, color='#0b0b0b', wrap=True)
+def arrow(x0, y0, x1, y1):
+    ax.annotate('', xy=(x1, y1), xytext=(x0, y0), arrowprops=dict(arrowstyle='-|>', color='#52514e', lw=1))
+R_ = FL['excluded_reasons']
+L, Wd, X2 = 4, 52, 62
+box(L, 88, Wd, 9, f"Schemes in the compiled database\n(Rose): {FL['rose_schemes']} schemes in {FL['rose_cities']} cities\n+ {FL['identified_later']} identified later (Oxford, 2025)")
+box(X2, 80, 36, 18, f"Excluded: {FL['excluded_inventory']}\n" + '\n'.join(f'{v} {k}' for k, v in R_.items()), fs=7.6)
+box(L, 70, Wd, 8, f"Kept: {FL['kept_from_rose']} schemes with a bounded zone\n+ {FL['added_with_evaluations']} added because evaluations were known")
+box(L, 54, Wd, 9, f"Inventory: {FL['inventory']} zone-based schemes\nsearched scheme by scheme (Round 1)\nand city by city, peer-reviewed only (Round 2)")
+box(X2, 54, 36, 9, f"No peer-reviewed numeric\nestimate: {FL['inventory'] - FL['schemes_with_numeric_estimate']} schemes", fs=7.8)
+box(L, 37, Wd, 9, f"{FL['estimates']} estimates from {FL['studies']} studies\n{FL['estimates_inventory']} on {FL['schemes_with_numeric_estimate']} inventory schemes, {FL['estimates_outside_inventory']} on schemes\noutside the inventory or pooled panels (Tables S13, S14)")
+box(X2, 37, 36, 9, "Not used as headline:\nDurham and Valletta (grey origin),\nsecondary outcomes, marginal changes,\npooled and outside-inventory rows", fs=7.4)
+box(L, 20, Wd, 9, f"{FL['phases_with_headline']} scheme phases with a headline estimate\n(London ULEZ split at its 2023 expansion,\nWestern Extension treated as an enlargement)")
+box(L, 3, Wd, 9, f"{FL['phases_with_area']} phases with a known zone area (Figure 1)\nEnlargements in the same city (Figure 2)\nInside and outside pairs (Figure 3)")
+for y0, y1 in [(88, 78), (70, 63), (54, 46), (37, 29), (20, 12)]:
+    arrow(L + Wd / 2, y0, L + Wd / 2, y1)
+for y in (92, 58.5, 41.5):
+    arrow(L + Wd, y, X2, y)
+fig.tight_layout(); fig.savefig(f'{F}/figS4_flow.png', dpi=300, bbox_inches='tight'); fig.savefig(f'{F}/figS4_flow.pdf', bbox_inches='tight'); plt.close(fig)

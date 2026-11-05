@@ -32,9 +32,9 @@ smap = {'LON_CC': (4, 'Central zone launch'), 'LON_WEZ': (5, 'Western'), 'MIL_C'
         'GOT': (3, 'Congestion tax launch'), 'BGO': (1, 'launch'), 'OSL': (9, 'launch'), 'TRD': (12, 'launch'), 'DUR': (2, 'launch')}
 label = {'LON_CC': 'London CC', 'LON_WEZ': 'London WEZ', 'MIL_C': 'Milan Area C', 'MIL_ECO': 'Milan Ecopass',
          'NYC': 'New York', 'SIN': 'Singapore ALS', 'STO': 'Stockholm', 'VAL': 'Valletta', 'AMS': 'Amsterdam (trucks)',
-         'BCN': 'Barcelona', 'BERLIN': 'Berlin', 'BHM': 'Birmingham', 'BRD': 'Bradford', 'GLA': 'Glasgow',
+         'BCN': 'Barcelona', 'BERLIN': 'Berlin', 'BHM': 'Birmingham CAZ', 'BRD': 'Bradford CAZ', 'GLA': 'Glasgow',
          'LON_ULEZ19': 'London ULEZ (2019)', 'LON_ULEZ23': 'London ULEZ expansion (2023)', 'MAD_C': 'Madrid Central', 'MIL_B': 'Milan Area B',
-         'MUC': 'Munich', 'SHF': 'Sheffield', 'ROM': 'Rome', 'LON_LEZ08': 'London LEZ (HGV)', 'LIS': 'Lisbon',
+         'MUC': 'Munich', 'SHF': 'Sheffield CAZ', 'ROM': 'Rome ZTL', 'LON_LEZ08': 'London LEZ (HGV)', 'LIS': 'Lisbon',
          'ANT': 'Antwerp', 'BRU': 'Brussels', 'GOT': 'Gothenburg', 'BGO': 'Bergen', 'OSL': 'Oslo',
          'TRD': 'Trondheim', 'DUR': 'Durham'}
 
@@ -74,8 +74,8 @@ ds = ds[ds.Key != 'LON_WEZ'].reset_index(drop=True)
 # ULEZ 2023 compliance from the peer-reviewed evaluation (Tong et al. 2025: 7.4% non-compliant).
 ds.loc[ds.Key == 'LON_ULEZ23', 'Compliance_pct'] = 92.6
 ds['Journal_evidence'] = ds.Evidence_tier.eq('journal article')
-SIZE_BINS = [0, 1, 10, 50, 500, 1e5]
-SIZE_LABS = ['Street (<1 km²)', 'City centre (1-10 km²)', 'Inner city (10-50 km²)', 'Whole city (50-500 km²)', 'Metropolitan (>500 km²)']
+SIZE_BINS = [0, 10, 50, 1e5]
+SIZE_LABS = ['Small (<10 km²)', 'Medium (10-50 km²)', 'Large (≥50 km²)']
 ds['Size_category'] = pd.cut(ds.Zone_km2, bins=SIZE_BINS, labels=SIZE_LABS, right=False).astype(str).replace('nan', '')
 ds.to_csv(f'{W}/analysis_dataset.csv', index=False)
 
@@ -177,6 +177,32 @@ for k, g in dr.groupby('Key'):
                      last_years=float(g.Years.iloc[-1]), first=float(e0), last=float(e1),
                      ratio=(round(float(e1 / e0), 2) if e0 * e1 > 0 else 'n/a (sign change)') if e0 != 0 else None))
 R['persistence'] = pers
+# Spillover: change outside the zone where the same study reported it (Figure 3).
+# Rows listed in data/curated/spillover_pairs.csv; the numbers come from the effects database.
+# Per scheme: earliest duration band, best design tier, median of inside and of outside values.
+from paths import CURATED
+sp_cur = pd.read_csv(CURATED / 'spillover_pairs.csv')
+sp_rows = rows.merge(sp_cur, on='Row', suffixes=('', '_cur'))
+assert (sp_rows.Phase_key == sp_rows.Phase_key_cur).all(), 'phase key mismatch in spillover_pairs.csv'
+assert sp_rows.Spillover_effect_pct.notna().all(), 'spillover row without an outside value'
+sp_rows.to_csv(f'{W}/spillover_rows.csv', index=False)
+spill = []
+order_ = {'short': 0, 'medium': 1, 'long': 2}
+for k, g in sp_rows[sp_rows.Use == 'Y'].groupby('Phase_key'):
+    b = min(g.Duration_band, key=lambda x: order_[x]); g = g[g.Duration_band == b]
+    t = g.Design_tier.min(); g = g[g.Design_tier == t]
+    lab = label.get(k, 'German LEZs (pooled)' if k == 'DE_POOL' else k)
+    spill.append(dict(Key=k, Label=lab, Type=g.Type.iloc[0], Outcome=g.Outcome.iloc[0],
+                      Inside_pct=float(np.median(g.Effect_pct)), Outside_pct=float(np.median(g.Spillover_effect_pct)),
+                      N_rows=int(len(g)), Band=b, Design_tier=int(t), Years=float(np.median(g.Years_in_operation_at_measurement)),
+                      Outside_type=g.Outside_type.iloc[0], Outside_location='; '.join(dict.fromkeys(g.Outside_location)),
+                      Rows_used=';'.join(map(str, g.Row))))
+spd = pd.DataFrame(spill).sort_values(['Type', 'Inside_pct'])
+spd.to_csv(f'{W}/spillover_pairs.csv', index=False)
+R['spillover'] = {'n_rows_with_outside_value': int(rows.Spillover_effect_pct.notna().sum()),
+                  'n_cities_with_outside_value': int(rows[rows.Spillover_effect_pct.notna()].City.nunique()),
+                  'n_rows_main_outcome_listed': int(len(sp_rows)), 'n_rows_used': int((sp_rows.Use == 'Y').sum()),
+                  'pairs': spd.to_dict('records')}
 # reversal and marginal evidence
 R['reversal'] = rows[rows.Analysis_set == 'reversal'][['Scheme', 'Effect_pct', 'Years_in_operation_at_measurement']].to_dict('records')
 R['marginal'] = rows[rows.Analysis_set == 'marginal'][['Scheme', 'Outcome', 'Effect_pct']].to_dict('records')
@@ -184,6 +210,37 @@ R['pooled'] = rows[rows.Analysis_set == 'pooled'][['Scheme', 'Outcome', 'Effect_
 R['counts'] = {'effect_rows_total': int(len(rows)), 'main_rows': int((rows.Analysis_set == 'main').sum()),
                'articles': int(rows[rows.DOI!='NO-DOI'].DOI.nunique() + rows[rows.DOI=='NO-DOI'].Peer_reviewed_citation.str[:30].nunique()), 'schemes_with_headline': int(len(ds)),
                'schemes_in_fig1': int(ds.Coverage.notna().sum())}
+# Flow of schemes and studies (Figure S4), counted from the source files rather than typed in
+from paths import RAW, DATABASE
+rose = pd.read_excel(RAW / 'Congestion_Charging_Database_-_Rose.xlsx')
+xl = pd.ExcelFile(DATABASE / 'Boundary_Size_Database_v3.xlsx')
+inv = xl.parse('Zone_schemes'); exc = xl.parse('Excluded'); eff = xl.parse('Effects')
+eff_sid = pd.to_numeric(eff.Scheme_ID, errors='coerce')
+def excl_reason(t):
+    t = str(t).lower()
+    if 'point-based' in t: return 'point-based charging'
+    if 'rationing' in t: return 'licence-plate rationing'
+    if 'duplicate' in t: return 'duplicate'
+    if 'toll' in t or 'bridge' in t: return 'linear, bridge or network tolls'
+    return 'no bounded zone (plans, packages, single street)'
+num = eff[eff.Effect_pct.notna() & eff_sid.notna()]
+in_inv_rows = rows[rows.Phase_key.isin(set(label) | {'LON_WEZ'})]
+R['flow'] = {
+    'rose_schemes': int(len(rose)), 'rose_cities': int(rose.City.nunique()),
+    'identified_later': int(exc.Rose_DB_row.astype(str).str.contains('not in source').sum()),
+    'excluded_inventory': int(len(exc)),
+    'excluded_reasons': exc.Reason.map(excl_reason).value_counts().to_dict(),
+    'kept_from_rose': int((inv.Origin == 'Rose DB').sum()),
+    'added_with_evaluations': int((inv.Origin != 'Rose DB').sum()),
+    'inventory': int(len(inv)),
+    'schemes_with_numeric_estimate': int(inv.ID.isin(set(num.Scheme_ID.astype(int))).sum()),
+    'schemes_without_estimate': int(len(inv) - inv.ID.isin(set(eff_sid.dropna().astype(int))).sum()),
+    'phases_with_headline': int(len(ds)), 'phases_with_area': int(ds.Coverage.notna().sum()),
+    'estimates': int(len(rows)), 'studies': R['counts']['articles'],
+    'estimates_inventory': int(len(in_inv_rows)), 'estimates_outside_inventory': int(len(rows) - len(in_inv_rows)),
+}
+assert sum(R['flow']['excluded_reasons'].values()) == R['flow']['excluded_inventory'], R['flow']['excluded_reasons']
+assert R['flow']['rose_schemes'] + R['flow']['identified_later'] - R['flow']['excluded_inventory'] == R['flow']['kept_from_rose']
 json.dump(R, open(f'{W}/results.json', 'w'), indent=1, default=str)
 pd.set_option('display.width', 250)
 print(ds[['Label', 'Type', 'Effect_pct', 'Zone_km2', 'Builtup_km2', 'Coverage', 'Years', 'Design_tier', 'Charge_to_income', 'Cars_covered', 'Compliance_pct']].to_string())

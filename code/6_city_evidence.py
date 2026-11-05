@@ -1,4 +1,4 @@
-"""Tables of every estimate of traffic and air quality, city by city: congestion charges (Supplementary Table S12) and low emission zones (Table S13).
+"""Tables of every estimate of traffic and air quality, city by city: congestion charges (Supplementary Table S13) and low emission zones (Table S14).
 
 All values come from output/analysis/analysis_rows.csv, which is built from data/extraction.
 """

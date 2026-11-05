@@ -37,6 +37,7 @@
 | Glasgow | Glasgow LEZ (enforced Jun 2023) | NO₂ | NO2 at Hope Street roadside, core weekdays | −13.0 | 0.3 | Before-after | Headline candidate | Shin et al. (2024), doi:10.32866/001c.123382 |
 | Sheffield | Clean Air Zone class C (Feb 2023) | Traffic | Traffic volume, 33 sensors inside and around CAZ | +0.0 | 0.7 | Before-after | Secondary | Williams et al. (2025), doi:10.1088/2515-7620/adf52f |
 | Sheffield | Clean Air Zone class C (Feb 2023) | NO₂ | De-weathered NO2 inside CAZ, DiD vs outside sites | +2.5 | 0.7 | Control or natural experiment | Headline candidate | Williams et al. (2025), doi:10.1088/2515-7620/adf52f |
+| Sheffield | Clean Air Zone class C (Feb 2023) | NO₂ | De-weathered NO2 inside CAZ, before-after (Feb 2022 to Feb 2023 vs Feb 2023 to Jun 2024) | −6.0 | 0.7 | Before-after | Headline candidate | Williams et al. (2025), doi:10.1088/2515-7620/adf52f |
 | Sheffield | Clean Air Zone class C (Feb 2023) | PM2.5 | De-weathered PM2.5 inside CAZ, DiD | +0.0 | 0.7 | Control or natural experiment | Secondary | Williams et al. (2025), doi:10.1088/2515-7620/adf52f |
 | Amsterdam | Amsterdam LEZ for trucks (2009) | NO₂ | Traffic contribution (roadside minus background) NO2 inside LEZ, adjusted for wind and traffic | −4.9 | 1.0 | Before-after | Headline candidate | Panteliadis et al. (2014), doi:10.1016/j.atmosenv.2013.12.035 |
 | Amsterdam | Amsterdam LEZ for trucks (2009) | PM10 | Traffic contribution PM10 inside LEZ | −5.8 | 1.0 | Before-after | Secondary | Panteliadis et al. (2014), doi:10.1016/j.atmosenv.2013.12.035 |

@@ -1,0 +1,10 @@
+Key,Label,Type,Outcome,Inside_pct,Outside_pct,N_rows,Band,Design_tier,Years,Outside_type,Outside_location,Rows_used
+MIL_C,Milan Area C,CC,Traffic,-31.1,-7.0,1,short,3,0.5,City-wide index,"Whole-city traffic index, priced hours, 2012",32
+STO,Stockholm,CC,Traffic,-21.0,5.0,1,short,3,0.3,Bypass road,"Bypass roads (E4/E20 and Södra länken), 2006 trial",13
+MIL_ECO,Milan Ecopass,CC,Traffic,-17.6,-3.5,2,short,3,0.45,Rest of city,"Traffic outside the charging area, nine months; City traffic index outside the zone, 2008",27;28
+GOT,Gothenburg,CC,Traffic,-12.0,26.0,1,short,3,0.5,Bypass road,"Norrleden bypass, charged hours, 2013",23
+MAD_C,Madrid Central,LEZ,NO2,-28.5,-4.0,1,short,1,0.3,Adjacent belt,"Four nearby stations, DiD",98
+LON_ULEZ19,London ULEZ (2019),LEZ,NO2,-19.0,-8.6,5,short,1,0.4,Adjacent belt,"Inner London traffic sites, 3 months; Inner London traffic sites, 11 months; Inner London urban background, 3 months; Roadside sites within 3.5 km of the zone (Belt 1); Background sites within 3.5 km of the zone (Belt 1)",47;48;49;55;56
+DE_POOL,German LEZs (pooled),LEZ,NO2,-9.8,22.0,1,short,1,0.1,Border strip,Within 500 m of the zone border (RDD),72
+SHF,Sheffield CAZ,LEZ,NO2,-6.04,-5.27,1,short,3,0.7,Rest of city,"Sites outside the CAZ, de-weathered before-after",205
+BHM,Birmingham CAZ,LEZ,NO2,-3.4,-6.6,1,short,1,0.5,Rest of city,"Roadside sites outside the CAZ, first year",89

@@ -35,7 +35,7 @@ Rotterdam,Traffic,1,-50.0,-50.0,-50.0
 Seoul,NO2,1,-4.7,-4.7,-4.7
 Seoul,PM10,1,-13.6,-13.6,-13.6
 Seoul,Traffic,3,-12.8,-7.9,-6.9
-Sheffield,NO2,1,2.5,2.5,2.5
+Sheffield,NO2,2,-6.0,-1.8,2.5
 Sheffield,PM2.5,1,0.0,0.0,0.0
 Sheffield,Traffic,1,0.0,0.0,0.0
 Tokyo (Greater Tokyo),Fleet,2,34.0,37.0,40.0

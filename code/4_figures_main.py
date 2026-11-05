@@ -1,6 +1,7 @@
 """Rapid review figures.
 Figure 1: headline effect by zone size category, congestion charges (traffic) and LEZs (NO2).
 Figure 2: within-city changes to zone or rules (enlarged, rules changed, suspended or removed).
+Figure 3: change inside and outside the zone where the same study reported both.
 """
 import pandas as pd, numpy as np, matplotlib
 matplotlib.use('Agg')
@@ -15,36 +16,32 @@ BLUE, ORANGE, INK, MUTED, GRID = '#2a78d6', '#eb6834', '#0b0b0b', '#52514e', '#e
 NSZ = {'BERLIN', 'LON_LEZ08', 'LON_ULEZ23', 'MIL_B'}
 
 ds = pd.read_csv(ANALYSIS / 'analysis_dataset.csv')
-cats = ['Street (<1 km²)', 'City centre (1-10 km²)', 'Inner city (10-50 km²)', 'Whole city (50-500 km²)', 'Metropolitan (>500 km²)']
-short = {'Street (<1 km²)': 'Street\n(<1 km²)', 'City centre (1-10 km²)': 'City centre\n(1 to 10 km²)',
-         'Inner city (10-50 km²)': 'Inner city\n(10 to 50 km²)', 'Whole city (50-500 km²)': 'Whole city\n(50 to 500 km²)',
-         'Metropolitan (>500 km²)': 'Metropolitan\n(>500 km²)'}
+cats = ['Small (<10 km²)', 'Medium (10-50 km²)', 'Large (≥50 km²)']
+short = {'Small (<10 km²)': 'Small\n(<10 km²)', 'Medium (10-50 km²)': 'Medium\n(10 to 50 km²)', 'Large (≥50 km²)': 'Large\n(≥50 km²)'}
+# label offsets (points) for the not-significant diamonds, which sit close to zero in the large category
+NS_OFF = {'BERLIN': ((-6, 15), 'right'), 'MIL_B': ((-6, -15), 'right'), 'LON_LEZ08': ((-4, -16), 'left'), 'LON_ULEZ23': ((-4, 16), 'left')}
 from adjustText import adjust_text
-fig, axes = plt.subplots(1, 2, figsize=(10, 4.9), gridspec_kw={'width_ratios': [2.4, 5]})
-for ax, (t, o, col, title, clist) in zip(axes, [('CC', 'Traffic', BLUE, 'A. Congestion charges: traffic', cats[1:3]),
-                                               ('LEZ', 'NO2', ORANGE, 'B. Low emission zones: NO$_2$', cats[:5])]):
+fig, axes = plt.subplots(1, 2, figsize=(10, 4.9), gridspec_kw={'width_ratios': [2.3, 3.6]})
+for ax, (t, o, col, title, clist) in zip(axes, [('CC', 'Traffic', BLUE, 'A. Congestion charges: traffic', cats[:2]),
+                                               ('LEZ', 'NO2', ORANGE, 'B. Low emission zones: NO$_2$', cats)]):
     g = ds[(ds.Type == t) & (ds.Outcome == o) & ds.Size_category.notna() & (ds.Size_category != '')]
     ax.axhline(0, color=MUTED, lw=0.8, zorder=1); ax.grid(axis='y', color=GRID, lw=0.6, zorder=0)
     texts = []; ticklabs = []; px = []; py = []
     ncat = len(clist)
     for i, c in enumerate(clist):
-        h = g[g.Size_category == c].sort_values('Effect_pct')
+        h = g[g.Size_category == c].sort_values('Zone_km2')  # left to right by zone area within each class
         mtxt = '' if h.empty else '\nmedian ' + f'{h.Effect_pct.median():+.0f}%'.replace('-', '−').replace('+0%', '0%')
         ticklabs.append(short[c] + f'\nn = {len(h)}' + mtxt)
         if h.empty: continue
-        xs = i + (np.linspace(-0.2, 0.2, len(h)) if len(h) > 1 else np.array([0.0]))
+        xs = i + (np.linspace(-0.3, 0.3, len(h)) if len(h) > 1 else np.array([0.0]))
         for x, (_, r) in zip(xs, h.iterrows()):
-            if r.Key in NSZ:
-                ax.scatter(x, r.Effect_pct, s=46, marker='D', facecolor=col if r.Design_tier == 1 else 'white', edgecolor=col, linewidth=1.4, zorder=4)
-            else:
-                ax.scatter(x, r.Effect_pct, s=46, marker='o', facecolor=col if r.Design_tier == 1 else 'white',
-                           edgecolor=col, linewidth=1.6, zorder=4)
+            mk = 'D' if r.Key in NSZ else 'o'
+            ax.scatter(x, r.Effect_pct, s=46, marker=mk, facecolor=col if r.Design_tier == 1 else 'white',
+                       edgecolor=col, linewidth=1.5, zorder=4)
             lab = r.Label.replace(' (trucks)', '').replace('London LEZ (HGV)', 'London LEZ (lorries)').replace('Singapore ALS', 'Singapore').replace('London CC', 'London').replace('London ULEZ (2019)', 'ULEZ (2019, central)').replace('London ULEZ expansion (2023)', 'ULEZ expansion (2023)')
             px.append(x); py.append(r.Effect_pct)
-            if r.Key in NSZ:  # zero-effect diamonds sit side by side, so place their labels by hand
-                k = list(h[h.Key.isin(NSZ)].Key).index(r.Key)
-                off, ha = ((-4, 16), 'right') if k == 0 else ((-4, -16), 'right')
-                if i == 4: off, ha = ((4, -16), 'left') if k == 0 else ((-4, 16), 'right')
+            if r.Key in NS_OFF:
+                off, ha = NS_OFF[r.Key]
                 ax.annotate(lab, (x, r.Effect_pct), xytext=off, textcoords='offset points', ha=ha, va='center', fontsize=7, color=MUTED, zorder=5,
                             arrowprops=dict(arrowstyle='-', color='#a8a7a2', lw=0.5, shrinkA=0, shrinkB=4))
             else:
@@ -86,4 +83,37 @@ h = [Line2D([], [], marker='o', ls='', mfc=MUTED, mec=MUTED, label='Control grou
 fig.legend(handles=h, frameon=False, fontsize=8, loc='lower center', ncol=3, bbox_to_anchor=(0.5, -0.02))
 fig.tight_layout(rect=(0, 0.06, 1, 1)); fig.savefig(f'{W}/fig2_boundary_size_within_city.png', dpi=300, bbox_inches='tight')
 fig.savefig(f'{W}/fig2_boundary_size_within_city.pdf', bbox_inches='tight'); plt.close(fig)
+
+# Figure 3: inside versus outside the zone, same study (spillover_pairs.csv from 2_merge_and_analyse.py)
+sp = pd.read_csv(ANALYSIS / 'spillover_pairs.csv')
+where = {'Bypass road': 'bypass road', 'Rest of city': 'rest of city', 'City-wide index': 'city-wide index',
+         'Adjacent belt': 'adjacent area', 'Border strip': 'within 500 m of border'}
+fig, axes = plt.subplots(1, 2, figsize=(9.2, 4.0), sharex=True, gridspec_kw={'width_ratios': [4, 5]})
+for ax, (t, col, title) in zip(axes, [('CC', BLUE, 'A. Congestion charges: traffic'), ('LEZ', ORANGE, 'B. Low emission zones: NO$_2$')]):
+    g = sp[sp.Type == t].sort_values('Inside_pct', ascending=False).reset_index(drop=True)
+    ax.axvline(0, color=MUTED, lw=0.8, zorder=1); ax.grid(axis='x', color=GRID, lw=0.6, zorder=0)
+    labs = []
+    for y, r in g.iterrows():
+        fc = col if r.Design_tier == 1 else 'white'
+        ax.plot([r.Inside_pct, r.Outside_pct], [y, y], color='#a8a7a2', lw=1.3, zorder=2)
+        ax.scatter(r.Inside_pct, y, s=64, marker='o', facecolor=fc, edgecolor=col, linewidth=1.6, zorder=4)
+        ax.scatter(r.Outside_pct, y, s=58, marker='s', facecolor=fc, edgecolor=col, linewidth=1.6, zorder=4)
+        lo, hi = sorted([(r.Inside_pct, 'in'), (r.Outside_pct, 'out')])
+        for (v, _), dx, ha in [(lo, -9, 'right'), (hi, 9, 'left')]:
+            ax.annotate(f'{v:+.0f}%'.replace('-', '\u2212'), (v, y), xytext=(dx, 0), textcoords='offset points',
+                        va='center', ha=ha, fontsize=8, color=INK, zorder=5)
+        lab = r.Label.replace('London ULEZ (2019)', 'London ULEZ (2019, central)')
+        labs.append(f'{lab}\noutside: {where[r.Outside_type]}')
+    ax.set_yticks(range(len(g))); ax.set_yticklabels(labs, fontsize=7.8); ax.invert_yaxis()
+    ax.set_ylim(len(g) - 0.4, -0.6)
+    ax.set_title(title, loc='left', fontsize=10, color=INK, fontweight='bold')
+    ax.set_xlabel('Reported change (%)')
+axes[0].set_xlim(-46, 36)
+h = [Line2D([], [], marker='o', ls='', mfc='#a8a7a2', mec=MUTED, label='Circle: inside zone'),
+     Line2D([], [], marker='s', ls='', mfc='#a8a7a2', mec=MUTED, label='Square: outside zone'),
+     Line2D([], [], marker='o', ls='', mfc=MUTED, mec=MUTED, label='Filled: control group'),
+     Line2D([], [], marker='o', ls='', mfc='white', mec=MUTED, mew=1.6, label='Open: before-after')]
+fig.legend(handles=h, frameon=False, fontsize=8, loc='lower center', ncol=4, bbox_to_anchor=(0.5, -0.02))
+fig.tight_layout(rect=(0, 0.07, 1, 1)); fig.savefig(f'{W}/fig3_inside_outside.png', dpi=300, bbox_inches='tight')
+fig.savefig(f'{W}/fig3_inside_outside.pdf', bbox_inches='tight'); plt.close(fig)
 print('ok')
