@@ -6,7 +6,7 @@ import shutil, subprocess
 from paths import MANUSCRIPT, TABLES, ROOT
 
 body = (MANUSCRIPT / 'manuscript_body.md').read_text()
-(MANUSCRIPT / 'manuscript.md').write_text(body.replace('{TABLE1}', (TABLES / 'table1_cc.md').read_text()).replace('{TABLE2}', (TABLES / 'table2_lez.md').read_text()))
+(MANUSCRIPT / 'manuscript.md').write_text(body.replace('{TABLE1}', (TABLES / 'table1_cc.md').read_text()).replace('{TABLE2}', (TABLES / 'table2_lez.md').read_text()).replace('{TABLE3}', (TABLES / 'table3_removals.md').read_text()))
 if shutil.which('pandoc'):
     for name in ('manuscript', 'supplementary'):
         subprocess.run(['pandoc', f'{name}.md', '-o', f'{name}.docx', f'--resource-path=.:{ROOT / "output"}'],

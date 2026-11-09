@@ -731,12 +731,26 @@
    "Effect_pct": -3.68,
    "Years_in_operation_at_measurement": 1.0,
    "Design": "DiD"
+  },
+  {
+   "Scheme": "LEZs in European metropolitan areas over 300,000 inhabitants (pooled)",
+   "Outcome": "Traffic",
+   "Effect_pct": -8.5,
+   "Years_in_operation_at_measurement": 2.0,
+   "Design": "DiD"
+  },
+  {
+   "Scheme": "German LEZs, 49 counties (pooled)",
+   "Outcome": "PM10",
+   "Effect_pct": -5.2,
+   "Years_in_operation_at_measurement": 3.0,
+   "Design": "DiD"
   }
  ],
  "counts": {
-  "effect_rows_total": 205,
-  "main_rows": 63,
-  "articles": 92,
+  "effect_rows_total": 212,
+  "main_rows": 64,
+  "articles": 99,
   "schemes_with_headline": 27,
   "schemes_in_fig1": 23
  },
@@ -759,9 +773,9 @@
   "schemes_without_estimate": 20,
   "phases_with_headline": 27,
   "phases_with_area": 23,
-  "estimates": 205,
-  "studies": 92,
-  "estimates_inventory": 162,
-  "estimates_outside_inventory": 43
+  "estimates": 212,
+  "studies": 99,
+  "estimates_inventory": 164,
+  "estimates_outside_inventory": 48
  }
 }

@@ -52,5 +52,5 @@ build(r[r.Type == 'CC'].copy(), ['London', 'Stockholm', 'Gothenburg', 'Milan', '
                                   'Trondheim', 'Valletta', 'Durham'], 'cc_city_evidence')
 build(r[r.Type == 'LEZ'].copy(), ['London', 'Birmingham', 'Bradford', 'Glasgow', 'Sheffield', 'Amsterdam', 'Rotterdam',
                                    'Netherlands (five cities incl. Amsterdam and Utrecht)', 'Antwerp', 'Brussels', 'Ghent',
-                                   'Berlin', 'Munich', 'Stuttgart', 'German LEZs (pooled)', 'Lisbon', 'Madrid', 'Barcelona',
+                                   'Berlin', 'Munich', 'Stuttgart', 'Leipzig', 'German LEZs (pooled)', 'European cities (pooled)', 'Lisbon', 'Madrid', 'Barcelona',
                                    'Seville', 'Milan', 'Rome', 'Seoul', 'Tokyo (Greater Tokyo)'], 'lez_city_evidence')

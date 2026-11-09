@@ -51,12 +51,13 @@ def key(r):
     if 'ulez greater' in s: return 'LON_ULEZ23'
     if 'lez for heavy' in s: return 'LON_LEZ08'
     if 'german' in c: return 'DE_POOL'
+    if 'european' in c: return 'EU_POOL'
     if 'netherlands' in c: return 'NL_POOL'
     return {'berlin': 'BERLIN', 'munich': 'MUC', 'birmingham': 'BHM', 'sheffield': 'SHF',
             'bradford': 'BRD', 'glasgow': 'GLA', 'madrid': 'MAD_C', 'barcelona': 'BCN',
             'milan': 'MIL_B', 'rome': 'ROM', 'lisbon': 'LIS', 'amsterdam': 'AMS',
             'antwerp': 'ANT', 'brussels': 'BRU', 'ghent': 'GHE', 'rotterdam': 'ROT', 'stuttgart': 'STU',
-            'seville': 'SEV', 'darmstadt': 'STREET_BAN', 'hamburg': 'STREET_BAN'}[c]
+            'seville': 'SEV', 'leipzig': 'LEI', 'darmstadt': 'STREET_BAN', 'hamburg': 'STREET_BAN'}[c]
 
 d['Scheme_key'] = d.apply(key, axis=1)
 
@@ -109,7 +110,7 @@ EXCLUDED_SCHEMES['STREET_BAN'] = 'excluded: street-specific diesel ban, not a bo
 EXCLUDED_DOI = {'10.1016/j.atmosenv.2024.120326': 'excluded: before and after periods fall in different seasons, and the authors do not attribute the change to the zone'}
 SECONDARY_DOI['10.1016/S2468-2667(18)30202-0'] = 'trend over 2006 to 2013, not attributed to the LEZ by the authors'
 # Schemes found in the November 2026 search that are not in the 50-scheme inventory (no verified zone area yet)
-OUTSIDE_INVENTORY = {'MAD_ZBE', 'TOK', 'SEO_LEZ', 'SEO_GTZ', 'GHE', 'ROT', 'STU', 'SEV'}
+OUTSIDE_INVENTORY = {'MAD_ZBE', 'TOK', 'SEO_LEZ', 'SEO_GTZ', 'GHE', 'ROT', 'STU', 'SEV', 'LEI'}
 set_, why = [], []
 for _, r in d.iterrows():
     s = r.Scheme.lower(); m = str(r.Outcome_metric).lower(); n = str(r.Extractor_notes).lower()
@@ -132,7 +133,7 @@ for _, r in d.iterrows():
         set_.append('secondary'); why.append('scheme or stage outside the 50-scheme inventory, not in Figure 1'); continue
     if r.DOI in SECONDARY_DOI:
         set_.append('secondary'); why.append(SECONDARY_DOI[r.DOI]); continue
-    if r.Scheme_key in ('DE_POOL', 'NL_POOL'):
+    if r.Scheme_key in ('DE_POOL', 'NL_POOL', 'EU_POOL'):
         set_.append('pooled'); why.append('pooled multi-city estimate, no single zone size'); continue
     if r.Type == 'CC':
         if r.Outcome == 'Traffic' and r.Measured_where in ('Cordon crossing', 'Inside zone'):
